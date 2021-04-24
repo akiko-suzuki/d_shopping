@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+{% load static %}
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- title -->
+        <title>{% block title %}{% endblock %}</title>
+        <!-- bootstrap -->
+        <link rel="stylesheet" type="text/css" href="{% static 'plug_in/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        {% block extra_css %}{% endblock %}
+    </head>
+    <body>
+        <a href=""><h3 class="navbar navbar-dark bg-primary text-white px-3">d_shopping app</h3></a>
+        {% block contents %}{% endblock %}
+        <script src="{% static 'plug_in/js/jquery-3.6.0.slim.min.js' %}"></script>
+        <script src="{% static 'plug_in/js/bootstrap.min.js' %}"></script>
+    </body>
+</html>
