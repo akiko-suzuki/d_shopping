@@ -1,0 +1,41 @@
+{% extends "load_file.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}商品管理{% endblock %}
+
+{% block contents %}
+<div class="page-wrapper chiller-theme toggled">
+    {% include 'include/sidebar.html' %}
+    <div class="page-content">
+        <div class="container-fluid">
+            <h2>商品一覧</h2>
+            <hr>
+            <div class="text-right">
+                <a href="#" class="btn btn-success btn my-3">追加</a>
+            </div>
+            <table class="table table-striped table-bordered">
+                <thead class="">
+                    <tr>
+                        <th style="width: 40%;">商品名</th>
+                        <th style="width: 50%;">価格</th>
+                        <th style="width: 10%;" class="text-center">修正</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-break align-middle">人参</td>
+                        <td class="text-break align-middle">200円</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-outline-info btn-sm">修正</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div><!-- page-content" -->
+</div><!-- page-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/common.js' %}"></script>
+{% endblock %}

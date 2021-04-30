@@ -11,12 +11,15 @@
         <!-- bootstrap -->
         <link rel="stylesheet" type="text/css" href="{% static 'plug_in/css/bootstrap.min.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <!-- font awesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
         {% block extra_css %}{% endblock %}
     </head>
     <body>
-        <a href=""><h3 class="navbar navbar-dark bg-primary text-white px-3">d_shopping app</h3></a>
         {% block contents %}{% endblock %}
-        <script src="{% static 'plug_in/js/jquery-3.6.0.slim.min.js' %}"></script>
+        <script src="{% static 'plug_in/js/jquery-3.6.0.min.js' %}"></script>
         <script src="{% static 'plug_in/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'plug_in/js/popper.min.js' %}"></script>
+        {% block extra_js %}{% endblock %}
     </body>
 </html>
