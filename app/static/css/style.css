@@ -1,6 +1,7 @@
 body {
   font-size: 0.9rem;
 }
+
 .page-wrapper .sidebar-wrapper,
 .sidebar-wrapper .sidebar-title > a,
 .sidebar-wrapper ul li a i,
@@ -13,13 +14,11 @@ body {
 }
 
 /*----------------page-wrapper----------------*/
-
 .page-wrapper {
   height: 100vh;
 }
 
 /*----------------toggeled sidebar----------------*/
-
 .page-wrapper.toggled .sidebar-wrapper {
   left: 0px;
 }
@@ -42,7 +41,6 @@ body {
   left: -40px;
 }
 /*----------------sidebar-wrapper----------------*/
-
 .sidebar-wrapper {
   width: 260px;
   height: 100%;
@@ -64,7 +62,6 @@ body {
 }
 
 /*----------------sidebar-content----------------*/
-
 .sidebar-content {
   max-height: calc(100% - 30px);
   height: calc(100% - 30px);
@@ -73,7 +70,6 @@ body {
 }
 
 /*--------------------sidebar-title----------------------*/
-
 .sidebar-wrapper .sidebar-title {
   padding: 10px 20px;
   display: flex;
@@ -90,8 +86,8 @@ body {
   cursor: pointer;
   font-size: 20px;
 }
-/*--------------------sidebar-header----------------------*/
 
+/*--------------------sidebar-header----------------------*/
 .sidebar-wrapper .sidebar-header {
   padding: 20px;
   overflow: hidden;
@@ -121,7 +117,6 @@ body {
 }
 
 /*----------------------sidebar-menu-------------------------*/
-
 .sidebar-wrapper .sidebar-menu {
   padding-bottom: 10px;
 }
@@ -152,7 +147,6 @@ body {
 }
 
 /*--------------------------side-footer------------------------------*/
-
 .sidebar-footer {
   position: absolute;
   width: 100%;
@@ -169,7 +163,6 @@ body {
 }
 
 /*--------------------------page-content-----------------------------*/
-
 .page-wrapper .page-content {
   display: inline-block;
   width: 100%;
@@ -187,7 +180,6 @@ body {
 
 
 /*-----------------------------chiller-theme-------------------------------------------------*/
-
 .chiller-theme .sidebar-wrapper {
     background: #31353D;
 }
@@ -240,3 +232,19 @@ body {
 .chiller-theme .sidebar-footer>a:last-child {
     border-right: none;
 }
+
+/*----------------image-preview----------------*/
+.image-preview {
+    width: 200px;
+    height: 180px;
+    background-position: center center;
+    background-size: cover;
+    -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+    display: inline-block;
+    background: #e9ecef;
+}
+
+
+
+
+
