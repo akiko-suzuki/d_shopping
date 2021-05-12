@@ -8,6 +8,7 @@ def product_list(request):
     :return:
     """
 
+    print("test")
     return render(request, 'product/product_list.html', {})
 
 
