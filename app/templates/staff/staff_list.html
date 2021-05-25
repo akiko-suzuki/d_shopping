@@ -27,24 +27,26 @@
             <h2>スタッフ一覧</h2>
             <hr>
             <div class="text-right">
-                <a href="#" class="btn btn-primary btn my-3">スタッフ追加</a>
+                <a href="{% url 'staff_add' %}" class="btn btn-primary btn my-3">スタッフ追加</a>
             </div>
             <table class="table table-striped table-bordered">
                 <thead class="">
                     <tr>
-                        <th style="width: 40%;">スタッフID</th>
-                        <th style="width: 50%;">名前</th>
+                        <th style="width: 25%;">スタッフコード</th>
+                        <th>名前</th>
                         <th style="width: 10%;" class="text-center">編集</th>
                     </tr>
                 </thead>
                 <tbody>
+                {% for p in page_obj %}
                     <tr>
-                        <td class="text-break align-middle">ID：1</td>
-                        <td class="text-break align-middle">河野太郎</td>
+                        <td class="text-break align-middle">{{ p.code }}</td>
+                        <td class="text-break align-middle">{{ p.name }}</td>
                         <td class="text-center">
-                            <a href="{% url 'staff_edit' %}" class="btn btn-outline-info btn-sm">編集</a>
+                            <a href="{% url 'staff_edit' p.id %}" class="btn btn-outline-info btn-sm">編集</a>
                         </td>
                     </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>

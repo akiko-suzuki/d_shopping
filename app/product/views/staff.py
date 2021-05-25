@@ -83,7 +83,7 @@ def product_add(request):
 
 
 def product_edit(request, product_id):
-    """ 商品編集（スタッフ）
+    """ 商品編集・削除（スタッフ）
 
     :param product_id: Product.id
     :param request:
@@ -91,12 +91,11 @@ def product_edit(request, product_id):
     """
     # 入力画面の制御に使う
     add_flag = 0
-
     product = get_object_or_404(Product, id=product_id)
 
     if request.method == "POST":
         form = ProductInputForm(request.POST, product_id=product_id)
-
+        # 商品情報更新
         if "btn_edit" in request.POST:
             if form.is_valid():
                 data = form.cleaned_data
@@ -110,6 +109,15 @@ def product_edit(request, product_id):
 
                 messages.success(request, "商品を編集しました")
                 return redirect("product_list")
+
+        # 商品情報削除
+        if "btn_delete" in request.POST:
+            # TODO 削除ボタン押下時に確認モーダルウィンドウを表示したい
+            product.is_deleted = True
+            product.save()
+
+            messages.success(request, "商品を削除しました")
+            return redirect("product_list")
 
     else:
         initial_dict = {
@@ -132,21 +140,4 @@ def product_edit(request, product_id):
         }
     )
 
-
-def product_delete(request, product_id):
-    """ 商品削除（スタッフ）
-
-    :param product_id: Product.id
-    :param request:
-    :return:
-    """
-    if request.method == "POST":
-        print('a')
-        product = get_object_or_404(Product, id=product_id)
-
-        messages.success(request, "商品を編集しました")
-        return redirect("product_list")
-
-    else:
-        raise Http404
 

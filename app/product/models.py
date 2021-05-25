@@ -32,7 +32,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name="販売価格")
     category = models.ForeignKey(ProductCategory, verbose_name="カテゴリー", on_delete=models.CASCADE)  # on_delete=models.CASCADE：親側のデータ削除時、連動して削除
     is_published = models.IntegerField(verbose_name="公開ステータス", choices=IS_PUBLISHED)  # 0:非公開 / 1:公開
-    image = models.CharField( max_length=255, null=True, blank=True)
+    image = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(verbose_name="登録日時", default=datetime.now())
     updated_at = models.DateTimeField(verbose_name="更新日時", auto_now=True)
     is_deleted = models.BooleanField(verbose_name="削除フラグ", default=False)  # False:有効 / True:論理削除
