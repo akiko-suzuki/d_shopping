@@ -1,4 +1,9 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.http import Http404
+from django.shortcuts import render, redirect, get_object_or_404
+
+from product.forms import ProductInputForm
+from product.models import Product
 
 
 def product_list(request):
@@ -8,15 +13,140 @@ def product_list(request):
     :return:
     """
 
-    print("test")
-    return render(request, 'product/product_list.html', {})
+    products = Product.objects.filter(is_deleted=False).order_by("-updated_at")
+
+    return render(
+        request,
+        'product/product_list.html',
+        context={"page_obj": products}
+    )
 
 
-def product_edit(request):
-    """ 商品編集（スタッフ）
+def product_add(request):
+    """ 商品登録（スタッフ）
 
     :param request:
     :return:
     """
+    # 入力画面の制御に使う
+    add_flag = 1
+    form = ProductInputForm(request.POST or None)
 
-    return render(request, 'product/product_edit.html', {})
+    if request.method == "POST":
+        # TODO 画像uploadがうまくいかない
+        # print("----------a")
+        # print(request.files)
+        # if request.FILES['image']:
+        #     image = request.FILES['image']
+        #     print(image)
+
+        # 登録ボタン押下時
+        if "btn_add" in request.POST:
+            if form.is_valid():
+                data = form.cleaned_data
+                # is_deleted=Trueの同一データがすでに登録されているかをチェック
+                qs = Product.objects.filter(
+                    name=data["name"],
+                    price=data["price"],
+                    category=data["category"],
+                    is_deleted=True,
+                )
+                # 同一商品のデータが存在していたいたとき
+                if qs.exists():
+                    product = qs.get()
+                    product.is_published = data["is_published"]
+                    product.image = data["image"]
+                    product.is_deleted = False
+                    product.save()
+
+                    messages.success(request, "商品を追加しました")
+                    return redirect("product_list")
+                else:
+                    Product.objects.create(
+                        name=data["name"],
+                        price=data["price"],
+                        is_published=data["is_published"],
+                        category=data["category"],
+                        image=data["image"],
+                    )
+                    messages.success(request, "商品を追加しました")
+                    return redirect("product_list")
+
+    return render(
+        request,
+        'product/product_input.html',
+        context={
+            "form": form,
+            "add_flag": add_flag,
+        }
+    )
+
+
+def product_edit(request, product_id):
+    """ 商品編集（スタッフ）
+
+    :param product_id: Product.id
+    :param request:
+    :return:
+    """
+    # 入力画面の制御に使う
+    add_flag = 0
+
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == "POST":
+        form = ProductInputForm(request.POST, product_id=product_id)
+
+        if "btn_edit" in request.POST:
+            if form.is_valid():
+                data = form.cleaned_data
+                # 情報を更新
+                product.name = data["name"]
+                product.price = data["price"]
+                product.category = data["category"]
+                product.is_published = data["is_published"]
+                product.image = data["image"]
+                product.save()
+
+                messages.success(request, "商品を編集しました")
+                return redirect("product_list")
+
+    else:
+        initial_dict = {
+            "name": product.name,
+            "price": product.price,
+            "category": product.category,
+            "is_published": product.is_published,
+            "image": product.image,
+        }
+        form = ProductInputForm(None, initial=initial_dict)
+
+    return render(
+        request,
+        'product/product_input.html',
+        context={
+            "form": form,
+            "add_flag": add_flag,
+            "product_id": product_id,
+
+        }
+    )
+
+
+def product_delete(request, product_id):
+    """ 商品削除（スタッフ）
+
+    :param product_id: Product.id
+    :param request:
+    :return:
+    """
+    if request.method == "POST":
+        print('a')
+        product = get_object_or_404(Product, id=product_id)
+
+        messages.success(request, "商品を編集しました")
+        return redirect("product_list")
+
+    else:
+        raise Http404
+

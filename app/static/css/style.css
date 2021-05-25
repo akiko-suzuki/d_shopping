@@ -244,6 +244,20 @@ body {
     background: #e9ecef;
 }
 
+/*----------------error_list----------------*/
+.errorlist {
+    color:red;
+    list-style: none;
+    padding-left: 10px !important;
+    margin-bottom: 0 !important;
+}
+
+/*----------------message_list----------------*/
+.messages {
+    padding: 0 !important;
+    list-style: none;
+}
+
 
 
 
