@@ -1,0 +1,41 @@
+{% extends "load_file.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}D_SHOPPING - TOP{% endblock %}
+
+{% block contents %}
+
+{% include 'include/user_header.html' %}
+
+<div class="bg-light p-5">
+  <main role="main">
+    <section>
+      <div class="container">
+        <form action="#">
+          <div class="row p-5 mx-5">
+            <div class="col-md-4">
+              <img  src="{% static 'images/no-image.jpg' %}" class="img-fluid mx-auto">
+            </div>
+            <div class="col-md-7">
+              <h2>商品名</h2>
+              <p class="text-muted small">カテゴリー：野菜</p>
+              <p class="h3">1,500円</p>
+              <div class="text-right mb-2 ">
+                数量：<input type="number" name="example" min="1" max="10" style="width:70px;" placeholder="0">
+              </div>
+              <div class="text-right">
+                <button type="button" name="" class="btn btn-info ml-auto">カートに入れる</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+{% include 'include/user_footer.html' %}
+
+{% endblock %}
+
+

@@ -5,7 +5,7 @@ from account.models import Staff
 
 class StaffInputForm(forms.Form):
     """ スタッフ登録・編集 form"""
-    code =  forms.CharField(
+    code = forms.CharField(
         label="スタッフコード",
         max_length=8,
         required=True,
@@ -40,7 +40,7 @@ class StaffInputForm(forms.Form):
                 self.add_error("password_conf", "パスワードが一致しません")
         return data
 
-    # TODO 数字のみのバリデーションを追加したい
+    # TODO スタッフコードに数字のみのバリデーションを追加する
     def clean_code(self):
         code = self.cleaned_data["code"]
         staff_id = self.staff_id
@@ -50,6 +50,7 @@ class StaffInputForm(forms.Form):
         ).exclude(id=staff_id).exists()
         if qs:
             self.add_error("code", "このスタッフコードは既に使用されています")
+        return code
 
 
 

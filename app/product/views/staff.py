@@ -3,7 +3,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
 from product.forms import ProductInputForm
-from product.models import Product
+from product.models import Product, ProductCategory
 
 
 def product_list(request):
@@ -141,3 +141,41 @@ def product_edit(request, product_id):
     )
 
 
+def category_list(request):
+    """ カテゴリー一覧（スタッフ）
+
+    :param request:
+    :return:
+    """
+
+    category = ProductCategory.objects.filter(is_deleted=False).order_by("-updated_at")
+
+    return render(
+        request,
+        'product/category_list.html',
+        context={"page_obj": category}
+    )
+
+
+def category_add(request):
+    """ カテゴリー追加（スタッフ）
+
+    :param request:
+    :return:
+    """
+    # 入力画面の制御に使う
+    add_flag = 1
+    form = ""
+
+    if request.method == "POST":
+        # 登録ボタン押下時
+        print("")
+
+    return render(
+        request,
+        'product/category_input.html',
+        context={
+            "add_flag": add_flag,
+            "form": form,
+        }
+    )

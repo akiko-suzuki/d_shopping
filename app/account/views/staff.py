@@ -17,7 +17,7 @@ def staff_list(request):
 
     return render(
         request,
-        'staff/staff_list.html',
+        'account/account_list.html',
         context={"page_obj": staff}
     )
 
@@ -37,6 +37,8 @@ def staff_add(request):
         if "btn_add" in request.POST:
             if form.is_valid():
                 data = form.cleaned_data
+                print("-----------------data")
+                print(data)
 
                 Staff.objects.create(
                     code=data["code"],
@@ -48,7 +50,7 @@ def staff_add(request):
 
     return render(
         request,
-        'staff/staff_input.html',
+        'account/account_input.html',
         context={
             "add_flag": add_flag,
             "form": form,
@@ -74,7 +76,7 @@ def staff_edit(request, staff_id):
             if form.is_valid():
                 data = form.cleaned_data
                 # 情報を更新
-                staff.code = data["name"]
+                staff.code = data["code"]
                 staff.name = data["name"]
                 staff.password = data["password"]
                 staff.save()
@@ -100,7 +102,7 @@ def staff_edit(request, staff_id):
 
     return render(
         request,
-        'staff/staff_input.html',
+        'account/account_input.html',
         context={
             "form": form,
             "add_flag": add_flag,
