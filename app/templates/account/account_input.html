@@ -34,6 +34,7 @@
                             </div>
                         </div>
                     </div>
+                    {% if add_flag %}
                     <div class="form-group">
                         <label for="password">パスワード</label>
                         {{ form.password|add_class:"form-control"|attr:"type:password" }}
@@ -52,6 +53,32 @@
                             </div>
                         </div>
                     </div>
+                    {% else %}
+                    <div class="form-group form-check pt-2">
+                        <input type="checkbox" class="form-check-input" name="change-password" id="change-password">
+                        <label class="form-check-label" for="change-password">パスワードを変更する</label>
+                    </div>
+                    <div class="form-content py-4 px-5 bg-white password-bg rounded">
+                        <div class="form-group">
+                            <label for="password">パスワード</label>
+                            {{ form.password|add_class:"form-control"|attr:"type:password" | attr:"disabled" }}
+                            <div class="form-row form-inline">
+                                <div class="col-9">
+                                    {{ form.password.errors }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password-conf">パスワード（確認）</label>
+                            {{ form.password_conf|add_class:"form-control"|attr:"type:password" | attr:"disabled" }}
+                            <div class="form-row form-inline">
+                                <div class="col-9">
+                                    {{ form.password_conf.errors }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div><!-- form-content" -->
                 <div class="d-flex justify-content-between">
                     <div>
@@ -73,5 +100,23 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+$(function(){
+
+  console.log("aaaa");
+
+  $('#change-password').click(function(){
+    if($('[name="change-password"]').prop('checked')){
+        $('[name="password"], [name="password_conf"]').prop('disabled', false);
+    }else{
+        $('[name="password"], [name="password_conf"]').prop('disabled', true);
+        $('[name="password"], [name="password_conf"]').val('');
+    }
+  });
+
+});
+</script>
 <script src="{% static 'js/common.js' %}"></script>
+
+
 {% endblock %}

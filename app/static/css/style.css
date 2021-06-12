@@ -258,6 +258,10 @@ body {
     list-style: none;
 }
 
+/*----------------password_back-ground----------------*/
+.password-bg {
+    background-color: #e9ecef !important;
+}
 
 
 

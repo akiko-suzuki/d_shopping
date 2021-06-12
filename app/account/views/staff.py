@@ -1,8 +1,9 @@
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
-from account.forms import StaffInputForm
+from account.forms import StaffAddForm, StaffEditForm
 from account.models import Staff
 
 
@@ -30,20 +31,20 @@ def staff_add(request):
     """
     # 入力画面の制御に使う
     add_flag = 1
-    form = StaffInputForm(request.POST or None)
+    form = StaffAddForm(request.POST or None)
 
     if request.method == "POST":
         # 登録ボタン押下時
         if "btn_add" in request.POST:
             if form.is_valid():
                 data = form.cleaned_data
-                print("-----------------data")
-                print(data)
+                # パスワードをハッシュ化
+                password = make_password(data["password"])
 
                 Staff.objects.create(
                     code=data["code"],
                     name=data["name"],
-                    password=data["password"],
+                    password=password,
                 )
                 messages.success(request, "スタッフを追加しました")
                 return redirect("staff_list")
@@ -70,15 +71,20 @@ def staff_edit(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
 
     if request.method == "POST":
-        form = StaffInputForm(request.POST, staff_id=staff_id)
+        form = StaffEditForm(request.POST, staff_id=staff_id)
         # スタッフ情報更新
         if "btn_edit" in request.POST:
             if form.is_valid():
                 data = form.cleaned_data
+                if data.get("password"):  # password 変更
+                    password = make_password(data["password"])
+                else:
+                    password = staff.password
+
                 # 情報を更新
                 staff.code = data["code"]
                 staff.name = data["name"]
-                staff.password = data["password"]
+                staff.password = password
                 staff.save()
 
                 messages.success(request, "スタッフを編集しました")
@@ -98,7 +104,7 @@ def staff_edit(request, staff_id):
             "code": staff.code,
             "name": staff.name,
         }
-        form = StaffInputForm(None, initial=initial_dict)
+        form = StaffEditForm(None, initial=initial_dict)
 
     return render(
         request,
