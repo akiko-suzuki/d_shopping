@@ -1,0 +1,53 @@
+{% extends "load_file.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}商品カテゴリー管理{% endblock %}
+
+{% block contents %}
+<div class="page-wrapper chiller-theme toggled">
+  {% include 'include/sidebar.html' %}
+  <div class="page-content">
+    <div class="container-fluid">
+      <h2>カテゴリー{% if add_flag %}追加{% else %}編集{% endif %}</h2>
+      <hr>
+      <form action="" method="post" id="input-form">
+        {% csrf_token %}
+        <div class="form-content py-4 px-5 bg-light">
+          <div class="form-group">
+            <label>カテゴリー名</label>
+            {{ form.name|add_class:"form-control"|attr:"placeholder:カテゴリー名" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.name.errors }}
+              </div>
+            </div>
+          </div>
+        </div><!-- form-content" -->
+        <div class="d-flex justify-content-between">
+          <div>
+            <a href="{% url 'category_list' %}" class="btn btn-primary btn my-3">一覧へ戻る</a>
+          </div>
+          <div>
+            {% if add_flag %}
+            <button type="submit" name="btn_add" class="btn btn-success btn my-3">登録</button>
+            {% else %}
+            <button type="button" id="btn_delete" name="btn_delete" class="btn btn-danger btn my-3">削除</button>
+            <button type="submit" name="btn_edit" class="btn btn-success btn my-3">更新</button>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+    </div>
+  </div><!-- page-content" -->
+</div><!-- page-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/common.js' %}"></script>
+<script>
+// Enterキーで削除のsubmitにならないようにする
+$('#btn_delete').on('click', function() {
+  $('#input-form').submit();
+});
+</script>
+{% endblock %}

@@ -6,38 +6,38 @@ from product.models import ProductCategory, Product
 class ProductInputForm(forms.Form):
     """ 商品登録・編集 form"""
     name = forms.CharField(
-        label="商品名",
+        label='商品名',
         max_length=255,
         required=True,
     )
     price = forms.IntegerField(
-        label="販売価格",
+        label='販売価格',
         required=True,
     )
     category = forms.ModelChoiceField(
-        label="カテゴリー",
+        label='カテゴリー',
         queryset=ProductCategory.objects.filter(is_deleted=False),
         required=True,
-        empty_label="-----"
+        empty_label='-----'
     )
     is_published = forms.IntegerField(
-        label="公開ステータス",
+        label='公開ステータス',
         required=True,
     )
     image = forms.ImageField(
-        label="商品画像",
+        label='商品画像',
         required=False,
     )
 
     def __init__(self, *args, **kwargs):
-        self.product_id = kwargs.pop("product_id", None)
+        self.product_id = kwargs.pop('product_id', None)
         super(ProductInputForm, self).__init__(*args, **kwargs)
 
     def clean(self):
         data = self.cleaned_data
-        name = data.get("name")
-        price = data.get("price")
-        category = data.get("category")
+        name = data.get('name')
+        price = data.get('price')
+        category = data.get('category')
         product_id = self.product_id
         # 重複チェック
         if name and price and category and product_id:
@@ -48,17 +48,18 @@ class ProductInputForm(forms.Form):
                 is_deleted=False
             ).exclude(id=product_id).exists()
             if qs:
-                self.add_error("name", "この情報は既に登録されています")
+                self.add_error('name', 'この情報は既に登録されています')
         return data
 
 
+class CategoryInputForm(forms.Form):
+    """ カテゴリー登録・編集 form"""
+    name = forms.CharField(
+        label='商品名',
+        max_length=255,
+        required=True,
+    )
 
-
-
-
-
-
-
-
-
-
+    def __init__(self, *args, **kwargs):
+        self.category_id = kwargs.pop('category_id', None)
+        super(CategoryInputForm, self).__init__(*args, **kwargs)

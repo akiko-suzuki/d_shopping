@@ -7,7 +7,7 @@ $(function(){
         $(".page-wrapper").removeClass("toggled");
     });
     // sidebar表示
-    $("#close-sidebar").on("click", function() {
+    $("#show-sidebar").on("click", function() {
         $(".page-wrapper").addClass("toggled");
     });
 

@@ -113,6 +113,5 @@ def staff_edit(request, staff_id):
             "form": form,
             "add_flag": add_flag,
             "staff_id": staff_id,
-
         }
     )

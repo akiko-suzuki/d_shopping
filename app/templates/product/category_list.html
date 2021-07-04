@@ -42,7 +42,7 @@
                     <tr>
                         <td class="text-break align-middle">{{ p.name }}</td>
                         <td class="text-center">
-                            <a href="" class="btn btn-outline-info btn-sm">編集</a>
+                            <a href="{% url 'category_edit' p.id %}" class="btn btn-outline-info btn-sm">編集</a>
                         </td>
                     </tr>
                     {% endfor %}
