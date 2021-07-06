@@ -32,17 +32,14 @@ def product_add(request):
     add_flag = 1
     # 公開フラグ
     is_published_flag = 0
-    form = ProductInputForm(request.POST or None)
+    form = ProductInputForm()
 
     if request.method == 'POST':
-        # TODO 画像uploadがうまくいかない
-        # print(request.files)
-        # if request.FILES['image']:
-        #     image = request.FILES['image']
-        #     print(image)
-
         # 登録ボタン押下時
         if 'btn_add' in request.POST:
+
+            form = ProductInputForm(request.POST, request.FILES)
+
             if form.is_valid():
                 data = form.cleaned_data
                 # is_deleted=Trueの同一データがすでに登録されているかをチェック
@@ -56,7 +53,7 @@ def product_add(request):
                 if qs.exists():
                     product = qs.get()
                     product.is_published = data['is_published']
-                    product.image = data['image']
+                    product.image = data.get('image')
                     product.is_deleted = False
                     product.save()
 
@@ -68,7 +65,7 @@ def product_add(request):
                         price=data['price'],
                         is_published=data['is_published'],
                         category=data['category'],
-                        image=data['image'],
+                        image=data.get('image'),
                     )
                     messages.success(request, '商品を追加しました')
                     return redirect('product_list')
@@ -101,7 +98,9 @@ def product_edit(request, product_id):
     is_published_flag = product.is_published
 
     if request.method == 'POST':
-        form = ProductInputForm(request.POST, product_id=product_id)
+        image_clear = request.POST.get('image-clear')
+
+        form = ProductInputForm(request.POST, request.FILES, product_id=product_id)
         # 商品情報更新
         if 'btn_edit' in request.POST:
             if form.is_valid():
@@ -111,7 +110,12 @@ def product_edit(request, product_id):
                 product.price = data['price']
                 product.category = data['category']
                 product.is_published = data['is_published']
-                product.image = data['image']
+                # 画像の「クリア」にチェックされたとき
+                if image_clear == 'on':
+                    product.image = None
+                # 変更画像がアップロードされたら画像を更新する
+                if data.get('image'):
+                    product.image = data['image']
                 product.save()
 
                 messages.success(request, '商品を編集しました')

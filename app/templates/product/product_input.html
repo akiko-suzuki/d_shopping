@@ -10,7 +10,7 @@
     <div class="container-fluid">
       <h2>商品{% if add_flag %}追加{% else %}編集{% endif %}</h2>
       <hr>
-      <form action="" method="post">
+      <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-content py-4 px-5 bg-light">
           <div class="form-group">
@@ -65,9 +65,9 @@
             <div>
               <label>画像</label>
             </div>
-            <div class="image-preview"></div>
+<!--            <div class="image-preview"></div>-->
             <div>
-              {{ form.image }}
+              {{ form.image }}{{ form.image.errors }}
             </div>
           </div>
         </div><!-- form-content" -->
