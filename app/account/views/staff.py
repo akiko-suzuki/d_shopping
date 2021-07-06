@@ -92,11 +92,10 @@ def staff_edit(request, staff_id):
 
         # 商品情報削除
         if "btn_delete" in request.POST:
-            # TODO 削除ボタン押下時に確認モーダルウィンドウを表示したい
             staff.is_deleted = True
             staff.save()
 
-            messages.success(request, "スタッフを削除しました")
+            messages.error(request, "スタッフを削除しました")
             return redirect("staff_list")
 
     else:

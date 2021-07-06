@@ -13,4 +13,12 @@ $(function(){
 
     // メッセージのfadeOut時間
     setTimeout("$('.alert').fadeOut()", 4000)
+
+    // Enterキーでsubmitの制御
+    $(document).on('keypress', function(event) {
+        return event.which !== 13;
+    });
+//    $(document).on('keypress', 'input:not(.allow_submit)', function(event) {
+//        return event.which !== 13;
+//    });
 });

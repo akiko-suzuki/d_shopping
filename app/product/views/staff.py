@@ -30,6 +30,8 @@ def product_add(request):
     """
     # 入力画面の制御に使う
     add_flag = 1
+    # 公開フラグ
+    is_published_flag = 0
     form = ProductInputForm(request.POST or None)
 
     if request.method == 'POST':
@@ -70,6 +72,9 @@ def product_add(request):
                     )
                     messages.success(request, '商品を追加しました')
                     return redirect('product_list')
+            else:
+                # エラー表示時に選択されていた公開ステータスを保持
+                is_published_flag = int(request.POST['is_published'])
 
     return render(
         request,
@@ -77,6 +82,7 @@ def product_add(request):
         context={
             'form': form,
             'add_flag': add_flag,
+            'is_published_flag': is_published_flag,
         }
     )
 
@@ -91,6 +97,8 @@ def product_edit(request, product_id):
     # 入力画面の制御に使う
     add_flag = 0
     product = get_object_or_404(Product, id=product_id)
+    # 公開フラグ
+    is_published_flag = product.is_published
 
     if request.method == 'POST':
         form = ProductInputForm(request.POST, product_id=product_id)
@@ -108,14 +116,16 @@ def product_edit(request, product_id):
 
                 messages.success(request, '商品を編集しました')
                 return redirect('product_list')
+            else:
+                # エラー表示時に選択されていた公開ステータスを保持
+                is_published_flag = int(request.POST['is_published'])
 
         # 商品情報削除
         if 'btn_delete' in request.POST:
-            # TODO 削除ボタン押下時に確認モーダルウィンドウを表示したい
             product.is_deleted = True
             product.save()
 
-            messages.success(request, '商品を削除しました')
+            messages.error(request, '商品を削除しました')
             return redirect('product_list')
 
     else:
@@ -133,9 +143,9 @@ def product_edit(request, product_id):
         'product/product_input.html',
         context={
             'form': form,
-            'add_flag': add_flag,
             'product_id': product_id,
-
+            'add_flag': add_flag,
+            'is_published_flag': is_published_flag,
         }
     )
 
@@ -209,10 +219,8 @@ def category_edit(request, category_id):
     category = get_object_or_404(ProductCategory, id=category_id)
 
     if request.method == 'POST':
-        print(request.POST)
-        print("--1")
         form = CategoryInputForm(request.POST, category_id=category_id)
-        # 商品情報更新
+        # カテゴリー情報更新
         if 'btn_edit' in request.POST:
             if form.is_valid():
                 data = form.cleaned_data
@@ -223,14 +231,18 @@ def category_edit(request, category_id):
                 messages.success(request, 'カテゴリーを編集しました')
                 return redirect('category_list')
 
-        # 商品情報削除
+        # カテゴリー情報削除
         if 'btn_delete' in request.POST:
-            print("--2")
-            # TODO 削除ボタン押下時に確認モーダルウィンドウを表示したい
             category.is_deleted = True
             category.save()
 
-            messages.success(request, 'カテゴリーを削除しました')
+            # 関連する商品レコードを論理削除
+            products = Product.objects.filter(category__id=category_id, is_deleted=False)
+            for product in products:
+                product.is_deleted = True
+                product.save()
+
+            messages.error(request, 'カテゴリーを削除しました')
             return redirect('category_list')
 
     else:
