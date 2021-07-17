@@ -2,6 +2,8 @@ from django import forms
 
 from product.models import ProductCategory, Product
 
+IS_PUBLISHED_STATUS = (('', '-----'), ('0', '非公開'), ('1', '公開'))
+
 
 class ProductInputForm(forms.Form):
     """ 商品登録・編集 form"""
@@ -52,10 +54,40 @@ class ProductInputForm(forms.Form):
         return data
 
 
+class ProductSearchForm(forms.Form):
+    """ 商品一覧検索フォーム """
+    name = forms.CharField(
+        label='商品名',
+        max_length=255,
+        required=False,
+    )
+    price_from = forms.IntegerField(
+        label='販売価格',
+        min_value=0,
+        required=False,
+    )
+    price_to = forms.IntegerField(
+        label='販売価格',
+        min_value=0,
+        required=False,
+    )
+    category = forms.ModelChoiceField(
+        label='カテゴリー',
+        queryset=ProductCategory.objects.filter(is_deleted=False),
+        empty_label='-----',
+        required=False,
+    )
+    is_published = forms.ChoiceField(
+        label='公開ステータス',
+        choices=IS_PUBLISHED_STATUS,
+        required=False,
+    )
+
+
 class CategoryInputForm(forms.Form):
     """ カテゴリー登録・編集 form"""
     name = forms.CharField(
-        label='商品名',
+        label='カテゴリー名',
         max_length=255,
         required=True,
     )

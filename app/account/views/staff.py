@@ -17,12 +17,12 @@ def staff_list(request):
     staff = None
 
     if search_form.is_valid():
-        param = search_form.cleaned_data
+        cleaned_data = search_form.cleaned_data
         staff = Staff.objects.filter(is_deleted=False).order_by('code')
-        if param['code']:
-            staff = staff.filter(code=param['code'])
-        if param['name']:
-            staff = staff.filter(name__icontains=param['name'])
+        if cleaned_data['code']:
+            staff = staff.filter(code=cleaned_data['code'])
+        if cleaned_data['name']:
+            staff = staff.filter(name__icontains=cleaned_data['name'])
 
     return render(
         request,

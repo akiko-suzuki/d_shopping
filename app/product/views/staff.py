@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
-from product.forms import ProductInputForm, CategoryInputForm
+from product.forms import ProductInputForm, ProductSearchForm, CategoryInputForm
 from product.models import Product, ProductCategory
 
 
@@ -12,13 +12,35 @@ def product_list(request):
     :param request:
     :return:
     """
+    search_form = ProductSearchForm(request.GET)
+    products = None
 
-    products = Product.objects.filter(is_deleted=False).order_by('-updated_at')
+    if search_form.is_valid():
+        cleaned_data = search_form.cleaned_data
+        products = Product.objects.filter(is_deleted=False).order_by('-updated_at')
+        # 商品名
+        if cleaned_data['name']:
+            products = products.filter(name__icontains=cleaned_data['name'])
+        # 価格（から）
+        if cleaned_data['price_from']:
+            products = products.filter(price__gte=cleaned_data['price_from'])
+        # 価格（まで）
+        if cleaned_data['price_to']:
+            products = products.filter(price__lte=cleaned_data['price_to'])
+        # カテゴリー
+        if cleaned_data['category']:
+            products = products.filter(category=cleaned_data['category'])
+        # 公開ステータス
+        if cleaned_data['is_published']:
+            products = products.filter(is_published=cleaned_data['is_published'])
 
     return render(
         request,
         'product/product_list.html',
-        context={'page_obj': products}
+        context={
+            'page_obj': products,
+            'search_form': search_form,
+        }
     )
 
 

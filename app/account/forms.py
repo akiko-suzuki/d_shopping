@@ -106,7 +106,7 @@ class StaffEditForm(forms.Form):
 
 
 class StaffSearchForm(forms.Form):
-    """ スタッフ検索フォーム """
+    """ スタッフ一覧検索フォーム """
     code = forms.CharField(
         label='スタッフコード',
         max_length=8,
