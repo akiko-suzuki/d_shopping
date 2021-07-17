@@ -35,11 +35,11 @@
                     <form action="" method="get">
                         <div class="row mb-3">
                             <div class="col-4">
-                                {{ search_form.name.label }}
+                                <span class="ml-1">{{ search_form.name.label }}</span>
                                 {{ search_form.name | add_class:"form-control form-control-sm" | attr:"placeholder:商品名" }}
                             </div>
                             <div class="col-7">
-                                {{ search_form.price_from.label }}
+                                <span class="ml-1">{{ search_form.price_from.label }}</span>
                                 <div class="d-flex">
                                     {{ search_form.price_from | add_class:"form-control form-control-sm" | attr:"placeholder:価格" }}
                                     <span class="mx-2">〜</span>
@@ -49,11 +49,11 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                {{ search_form.category.label }}
+                                <span class="ml-1">{{ search_form.category.label }}</span>
                                 {{ search_form.category | add_class:"form-control form-control-sm" | attr:"placeholder:商品名" }}
                             </div>
                             <div class="col-3">
-                                {{ search_form.is_published.label }}
+                                <span class="ml-1">{{ search_form.is_published.label }}</span>
                                 {{ search_form.is_published | add_class:"form-control form-control-sm" | attr:"placeholder:商品名" }}
                             </div>
                         </div>

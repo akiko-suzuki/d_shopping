@@ -34,11 +34,11 @@
                     <form action="" method="get">
                         <div class="row">
                             <div class="col-4">
-                                {{ search_form.code.label }}
+                                <span class="ml-1">{{ search_form.code.label }}</span>
                                 {{ search_form.code | add_class:"form-control form-control-sm" | attr:"placeholder:0000" }}
                             </div>
                             <div class="col-4">
-                                {{ search_form.name.label }}
+                                <span class="ml-1">{{ search_form.name.label }}</span>
                                 {{ search_form.name | add_class:"form-control form-control-sm" | attr:"placeholder:スタッフ名" }}
                             </div>
                         </div>

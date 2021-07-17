@@ -95,3 +95,12 @@ class CategoryInputForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.category_id = kwargs.pop('category_id', None)
         super(CategoryInputForm, self).__init__(*args, **kwargs)
+
+
+class CategorySearchForm(forms.Form):
+    """ カテゴリー一覧検索フォーム """
+    name = forms.CharField(
+        label='カテゴリー名',
+        max_length=255,
+        required=False,
+    )

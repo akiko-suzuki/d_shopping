@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
-from product.forms import ProductInputForm, ProductSearchForm, CategoryInputForm
+from product.forms import ProductInputForm, ProductSearchForm, CategoryInputForm, CategorySearchForm
 from product.models import Product, ProductCategory
 
 
@@ -182,13 +182,24 @@ def category_list(request):
     :param request:
     :return:
     """
+    search_form = CategorySearchForm(request.GET)
+    category = None
 
-    category = ProductCategory.objects.filter(is_deleted=False).order_by('-updated_at')
+    if search_form.is_valid():
+        cleaned_data = search_form.cleaned_data
+        category = ProductCategory.objects.filter(is_deleted=False).order_by('-updated_at')
+
+        # カテゴリー名
+        if cleaned_data['name']:
+            category = category.filter(name__icontains=cleaned_data['name'])
 
     return render(
         request,
         'product/category_list.html',
-        context={'page_obj': category}
+        context={
+            'page_obj': category,
+            'search_form': search_form,
+        }
     )
 
 
