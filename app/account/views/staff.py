@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
-from account.forms import StaffAddForm, StaffEditForm
+from account.forms import StaffAddForm, StaffEditForm, StaffSearchForm
 from account.models import Staff
 
 
@@ -13,13 +13,24 @@ def staff_list(request):
     :param request:
     :return:
     """
+    search_form = StaffSearchForm(request.GET)
+    staff = None
 
-    staff = Staff.objects.filter(is_deleted=False).order_by('code')
+    if search_form.is_valid():
+        param = search_form.cleaned_data
+        staff = Staff.objects.filter(is_deleted=False).order_by('code')
+        if param['code']:
+            staff = staff.filter(code=param['code'])
+        if param['name']:
+            staff = staff.filter(name__icontains=param['name'])
 
     return render(
         request,
         'account/account_list.html',
-        context={'page_obj': staff}
+        context={
+            'search_form': search_form,
+            'page_obj': staff,
+        }
     )
 
 
