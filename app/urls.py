@@ -4,15 +4,20 @@ from django.conf import settings
 from django.conf.urls import include
 from django.conf.urls.static import static
 
-from product import views
+from account import views
 
 urlpatterns = [
     # Django admin
     path('admin/', admin.site.urls),
     # top画面（ユーザ）
-    path('', views.user_top, name="user_top"),
+    path('', views.user_top, name='user_top'),
     # 商品詳細画面（ユーザ）
     path('product_details/', include('product.user_urls')),
+
+    # ログイン（スタッフ）
+    path('staff/', views.staff_login, name='staff_login'),
+    # ログアウト（スタッフ）
+    path('staff/logout', views.staff_logout, name='staff_logout'),
 
     # 商品管理画面（スタッフ）
     path('staff/product/', include('product.staff_urls')),

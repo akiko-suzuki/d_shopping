@@ -117,3 +117,16 @@ class StaffSearchForm(forms.Form):
         max_length=255,
         required=False,
     )
+
+
+class StaffLoginForm(forms.Form):
+    code = forms.CharField(
+        label='スタッフコード',
+        max_length=8,
+        required=True,
+    )
+    password = forms.CharField(
+        label='パスワード',
+        max_length=255,
+        required=True,
+    )

@@ -1,10 +1,46 @@
 from django.contrib import messages
-from django.contrib.auth.hashers import make_password
-from django.http import Http404
+from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import render, redirect, get_object_or_404
 
-from account.forms import StaffAddForm, StaffEditForm, StaffSearchForm
+from account.forms import StaffLoginForm, StaffAddForm, StaffEditForm, StaffSearchForm
 from account.models import Staff
+
+
+def staff_login(request):
+    """ ログイン画面（スタッフ）"""
+    form = StaffLoginForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            data = form.cleaned_data
+            # スタッフコードでfilter
+            staff = Staff.objects.filter(code=data['code'], is_deleted=False)
+            if staff.exists():
+                staff = staff.get()
+                if check_password(data['password'], staff.password):
+                    # sessionにstaff.idを格納
+                    request.session['staff_id'] = staff.id
+                    return redirect('product_list')
+                else:
+                    messages.error(request, 'スタッフコードまたはパスワードが正しくありません')
+            else:
+                messages.error(request, 'スタッフコードまたはパスワードが正しくありません')
+
+    return render(
+        request,
+        'login.html',
+        context={
+            'form': form
+        }
+    )
+
+
+def staff_logout(request):
+    """ ログアウト """
+
+    request.session.clear()
+
+    return redirect('staff_login')
 
 
 def staff_list(request):

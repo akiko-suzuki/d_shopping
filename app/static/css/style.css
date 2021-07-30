@@ -263,6 +263,12 @@ body {
     background-color: #e9ecef !important;
 }
 
+.s_login_wrapper {
+    max-width: 600px;
+    margin-top: 20vh;
+    background-color: #f8f9fa!important;
+}
+
 
 
 
