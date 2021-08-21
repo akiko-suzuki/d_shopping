@@ -1,7 +1,7 @@
 from django.contrib import messages
-from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
+from core.paginator import paginate_query
 from product.forms import ProductInputForm, ProductSearchForm, CategoryInputForm, CategorySearchForm
 from product.models import Product, ProductCategory
 
@@ -13,32 +13,36 @@ def product_list(request):
     :return:
     """
     search_form = ProductSearchForm(request.GET)
-    products = None
+    # Queryset初期値
+    qs = Product.objects.none()
 
+    # 検索
     if search_form.is_valid():
         cleaned_data = search_form.cleaned_data
-        products = Product.objects.filter(is_deleted=False).order_by('-updated_at')
+        qs = Product.objects.filter(is_deleted=False).order_by('-updated_at')
         # 商品名
         if cleaned_data['name']:
-            products = products.filter(name__icontains=cleaned_data['name'])
+            qs = qs.filter(name__icontains=cleaned_data['name'])
         # 価格（から）
         if cleaned_data['price_from']:
-            products = products.filter(price__gte=cleaned_data['price_from'])
+            qs = qs.filter(price__gte=cleaned_data['price_from'])
         # 価格（まで）
         if cleaned_data['price_to']:
-            products = products.filter(price__lte=cleaned_data['price_to'])
+            qs = qs.filter(price__lte=cleaned_data['price_to'])
         # カテゴリー
         if cleaned_data['category']:
-            products = products.filter(category=cleaned_data['category'])
+            qs = qs.filter(category=cleaned_data['category'])
         # 公開ステータス
         if cleaned_data['is_published']:
-            products = products.filter(is_published=cleaned_data['is_published'])
+            qs = qs.filter(is_published=cleaned_data['is_published'])
+
+    page_obj = paginate_query(request, qs)
 
     return render(
         request,
         'product/product_list.html',
         context={
-            'page_obj': products,
+            'page_obj': page_obj,
             'search_form': search_form,
         }
     )
@@ -183,21 +187,24 @@ def category_list(request):
     :return:
     """
     search_form = CategorySearchForm(request.GET)
-    category = None
+    # Queryset初期値
+    qs = ProductCategory.objects.none()
 
+    # 検索
     if search_form.is_valid():
         cleaned_data = search_form.cleaned_data
-        category = ProductCategory.objects.filter(is_deleted=False).order_by('-updated_at')
-
+        qs = ProductCategory.objects.filter(is_deleted=False).order_by('-updated_at')
         # カテゴリー名
         if cleaned_data['name']:
-            category = category.filter(name__icontains=cleaned_data['name'])
+            qs = qs.filter(name__icontains=cleaned_data['name'])
+
+    page_obj = paginate_query(request, qs)
 
     return render(
         request,
         'product/category_list.html',
         context={
-            'page_obj': category,
+            'page_obj': page_obj,
             'search_form': search_form,
         }
     )

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from account.forms import StaffLoginForm, StaffAddForm, StaffEditForm, StaffSearchForm
 from account.models import Staff
+from core.paginator import paginate_query
 
 
 def staff_login(request):
@@ -50,22 +51,28 @@ def staff_list(request):
     :return:
     """
     search_form = StaffSearchForm(request.GET)
-    staff = None
+    # Queryset初期値
+    qs = Staff.objects.none()
 
+    # 検索
     if search_form.is_valid():
         cleaned_data = search_form.cleaned_data
-        staff = Staff.objects.filter(is_deleted=False).order_by('code')
+        qs = Staff.objects.filter(is_deleted=False).order_by('code')
+        # スタッフコード
         if cleaned_data['code']:
-            staff = staff.filter(code=cleaned_data['code'])
+            qs = qs.filter(code=cleaned_data['code'])
+        # スタッフ名
         if cleaned_data['name']:
-            staff = staff.filter(name__icontains=cleaned_data['name'])
+            qs = qs.filter(name__icontains=cleaned_data['name'])
+
+    page_obj = paginate_query(request, qs)
 
     return render(
         request,
         'account/account_list.html',
         context={
             'search_form': search_form,
-            'page_obj': staff,
+            'page_obj': page_obj,
         }
     )
 

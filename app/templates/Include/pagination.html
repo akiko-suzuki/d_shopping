@@ -1,0 +1,45 @@
+{% load static %}
+{% load widget_tweaks %}
+<div>
+    <nav class="pt-4 bm-2">
+        <ul class="pagination pagination-sm justify-content-center">
+            <!-- 最初、前へ -->
+            {% if page_obj.has_previous %}
+            <li><a class="page-link" href="?page=1">最初</a></li>
+            <li><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><<</a></li>
+            {% endif %}
+
+            <!-- TODO ページ番号数を揃える方法 もっといいやり方ありそう -->
+            <!-- ページ番号数を全部で5つに整える（数字のコメントアウトは、全10ページの場合） -->
+            <!-- page_obj.number == 現在のページ番号 -->
+            <!-- page_obj.paginator.num_pages == 最後のページ番号 -->
+            {% for n in page_obj.paginator.page_range %}
+                <!-- 現在のページ -->
+                {% if page_obj.number == n %}
+                <li class="disabled"><div class="page-link text-secondary d-inline-block disabled">{{ n }}</div></li>
+                <!-- [1] 2 3 4 5 -->
+                {% elif page_obj.number == 1 and n <= 5 %}
+                <li class=""><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                <!-- 1 [2] 3 4 5 -->
+                {% elif page_obj.number == 2 and n <= 5 %}
+                <li class=""><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                <!-- 1 2 [3] 4 5 -->
+                {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+                <li class=""><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                <!-- 6 7 8 [9] 10 -->
+                {% elif page_obj.number == page_obj.paginator.num_pages|add:'-1' and n > page_obj.number|add:'-4' %}
+                <li class=""><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                <!-- 6 7 8 9 [10] -->
+                {% elif page_obj.number == page_obj.paginator.num_pages and n > page_obj.number|add:'-5' %}
+                <li class=""><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            <!-- 次へ、最後 -->
+            {% if page_obj.has_next %}
+            <li><a class="page-link" href="?page={{ page_obj.next_page_number }}">>></a></li>
+            <li><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">最後</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
