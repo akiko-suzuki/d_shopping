@@ -2,8 +2,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
 from core.paginator import paginate_query
-from product.forms import ProductInputForm, ProductSearchForm, CategoryInputForm, CategorySearchForm
-from product.models import Product, ProductCategory
+from product.forms import ProductInputForm, ProductSearchForm
+from product.models import Product
 
 
 def product_list(request):
@@ -111,7 +111,7 @@ def product_add(request):
 
 
 def product_edit(request, product_id):
-    """ 商品編集・削除（スタッフ）
+    """ 商品編集（スタッフ）
 
     :param product_id: Product.id
     :param request:
@@ -180,126 +180,16 @@ def product_edit(request, product_id):
     )
 
 
-def category_list(request):
-    """ カテゴリー一覧（スタッフ）
+def product_delete(request):
+    """ 商品削除（スタッフ）
 
     :param request:
     :return:
     """
-    search_form = CategorySearchForm(request.GET)
-    # Queryset初期値
-    qs = ProductCategory.objects.none()
+    product_id = request.POST.get('product_id')
+    product = get_object_or_404(Product, id=product_id)
+    product.is_deleted = True
+    product.save()
+    messages.error(request, '商品を削除しました')
 
-    # 検索
-    if search_form.is_valid():
-        cleaned_data = search_form.cleaned_data
-        qs = ProductCategory.objects.filter(is_deleted=False).order_by('-updated_at')
-        # カテゴリー名
-        if cleaned_data['name']:
-            qs = qs.filter(name__icontains=cleaned_data['name'])
-
-    page_obj = paginate_query(request, qs)
-
-    return render(
-        request,
-        'product/category_list.html',
-        context={
-            'page_obj': page_obj,
-            'search_form': search_form,
-        }
-    )
-
-
-def category_add(request):
-    """ カテゴリー追加（スタッフ）
-
-    :param request:
-    :return:
-    """
-    # 入力画面の制御に使う
-    add_flag = 1
-    form = CategoryInputForm(request.POST or None)
-
-    # 登録ボタン押下時
-    if request.method == 'POST':
-        if form.is_valid():
-            data = form.cleaned_data
-            # 無効のデータが存在するかチェック
-            qs = ProductCategory.objects.filter(
-                name=data['name'],
-                is_deleted=True,
-            )
-            if qs.exists():
-                category = qs.get()
-                category.is_deleted = False
-                category.save()
-            else:
-                ProductCategory.objects.create(
-                    name=data['name'],
-                )
-            messages.success(request, 'カテゴリーを追加しました')
-            return redirect('category_list')
-
-    return render(
-        request,
-        'product/category_input.html',
-        context={
-            'add_flag': add_flag,
-            'form': form,
-        }
-    )
-
-
-def category_edit(request, category_id):
-    """ カテゴリー編集・削除（スタッフ）
-
-    :param category_id: ProductCategory.id
-    :param request:
-    :return:
-    """
-
-    # 入力画面の制御に使う
-    add_flag = 0
-    category = get_object_or_404(ProductCategory, id=category_id)
-
-    if request.method == 'POST':
-        form = CategoryInputForm(request.POST, category_id=category_id)
-        # カテゴリー情報更新
-        if 'btn_edit' in request.POST:
-            if form.is_valid():
-                data = form.cleaned_data
-                # 情報を更新
-                category.name = data['name']
-                category.save()
-
-                messages.success(request, 'カテゴリーを編集しました')
-                return redirect('category_list')
-
-        # カテゴリー情報削除
-        if 'btn_delete' in request.POST:
-            category.is_deleted = True
-            category.save()
-
-            # 関連する商品レコードを論理削除
-            products = Product.objects.filter(category__id=category_id, is_deleted=False)
-            for product in products:
-                product.is_deleted = True
-                product.save()
-
-            messages.error(request, 'カテゴリーを削除しました')
-            return redirect('category_list')
-
-    else:
-        initial_dict = {
-            'name': category.name,
-        }
-        form = CategoryInputForm(None, initial=initial_dict)
-
-    return render(
-        request,
-        'product/category_input.html',
-        context={
-            'add_flag': add_flag,
-            'form': form,
-        }
-    )
+    return redirect('product_list')

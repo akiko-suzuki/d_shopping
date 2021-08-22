@@ -90,7 +90,12 @@
                     {% endif %}
                     </div>
                 </div>
-                <!-- Modal -->
+            </form>
+
+            <!-- Modal -->
+            <form action="{% url 'staff_delete' %}" method="post">
+            {% csrf_token %}
+                <input type="hidden" name="staff_id" value="{{ staff_id }}">
                 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -110,8 +115,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- Modal -->
             </form>
+            <!-- Modal -->
+
         </div>
     </div><!-- page-content" -->
 </div><!-- page-wrapper -->

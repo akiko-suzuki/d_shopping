@@ -21,6 +21,8 @@ urlpatterns = [
 
     # 商品管理画面（スタッフ）
     path('staff/product/', include('product.staff_urls')),
+    # カテゴリー管理画面（スタッフ）
+    path('staff/category/', include('category.staff_urls')),
     # スタッフ管理画面（スタッフ）
     path('staff/account/', include('account.staff_urls')),
 ]

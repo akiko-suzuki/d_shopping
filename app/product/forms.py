@@ -1,6 +1,7 @@
 from django import forms
 
-from product.models import ProductCategory, Product
+from category.models import Category
+from product.models import Product
 
 IS_PUBLISHED_STATUS = (('', '-----'), ('0', '非公開'), ('1', '公開'))
 
@@ -18,7 +19,7 @@ class ProductInputForm(forms.Form):
     )
     category = forms.ModelChoiceField(
         label='カテゴリー',
-        queryset=ProductCategory.objects.filter(is_deleted=False),
+        queryset=Category.objects.filter(is_deleted=False),
         required=True,
         empty_label='-----'
     )
@@ -73,34 +74,12 @@ class ProductSearchForm(forms.Form):
     )
     category = forms.ModelChoiceField(
         label='カテゴリー',
-        queryset=ProductCategory.objects.filter(is_deleted=False),
+        queryset=Category.objects.filter(is_deleted=False),
         empty_label='-----',
         required=False,
     )
     is_published = forms.ChoiceField(
         label='公開ステータス',
         choices=IS_PUBLISHED_STATUS,
-        required=False,
-    )
-
-
-class CategoryInputForm(forms.Form):
-    """ カテゴリー登録・編集 form"""
-    name = forms.CharField(
-        label='カテゴリー名',
-        max_length=255,
-        required=True,
-    )
-
-    def __init__(self, *args, **kwargs):
-        self.category_id = kwargs.pop('category_id', None)
-        super(CategoryInputForm, self).__init__(*args, **kwargs)
-
-
-class CategorySearchForm(forms.Form):
-    """ カテゴリー一覧検索フォーム """
-    name = forms.CharField(
-        label='カテゴリー名',
-        max_length=255,
         required=False,
     )

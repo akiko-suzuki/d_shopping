@@ -10,7 +10,6 @@ from core.paginator import paginate_query
 def staff_login(request):
     """ ログイン画面（スタッフ）"""
     form = StaffLoginForm(request.POST or None)
-
     if request.method == 'POST':
         if form.is_valid():
             data = form.cleaned_data
@@ -27,20 +26,17 @@ def staff_login(request):
             else:
                 messages.error(request, 'スタッフコードまたはパスワードが正しくありません')
 
-    return render(
-        request,
-        'login.html',
-        context={
-            'form': form
-        }
-    )
+    # ログイン済みの場合、商品一覧画面へ遷移させる
+    if request.session.get('staff_id'):
+        return redirect('product_list')
+    else:
+        return render(request, 'login.html', context={'form': form})
 
 
 def staff_logout(request):
     """ ログアウト """
-
-    request.session.clear()
-
+    # セッション情報削除
+    del request.session['staff_id']
     return redirect('staff_login')
 
 
@@ -114,7 +110,7 @@ def staff_add(request):
 
 
 def staff_edit(request, staff_id):
-    """ スタッフ編集・削除（スタッフ）
+    """ スタッフ編集（スタッフ）
 
     :param staff_id: Staff.id
     :param request:
@@ -144,14 +140,6 @@ def staff_edit(request, staff_id):
                 messages.success(request, 'スタッフを編集しました')
                 return redirect('staff_list')
 
-        # 商品情報削除
-        if 'btn_delete' in request.POST:
-            staff.is_deleted = True
-            staff.save()
-
-            messages.error(request, 'スタッフを削除しました')
-            return redirect('staff_list')
-
     else:
         initial_dict = {
             'code': staff.code,
@@ -168,3 +156,18 @@ def staff_edit(request, staff_id):
             'staff_id': staff_id,
         }
     )
+
+
+def staff_delete(request):
+    """ スタッフ削除（スタッフ）
+
+    :param request:
+    :return:
+    """
+    staff_id = request.POST.get('staff_id')
+    staff = get_object_or_404(Staff, id=staff_id)
+    staff.is_deleted = True
+    staff.save()
+    messages.error(request, 'スタッフを削除しました')
+
+    return redirect('staff_list')

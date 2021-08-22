@@ -11,7 +11,7 @@
       <h2>カテゴリー{% if add_flag %}追加{% else %}編集{% endif %}</h2>
       <hr>
       <form action="" method="post" id="input-form">
-        {% csrf_token %}
+      {% csrf_token %}
         <div class="form-content py-4 px-5 bg-light">
           <div class="form-group">
             <label>カテゴリー名</label>
@@ -36,7 +36,12 @@
             {% endif %}
           </div>
         </div>
-        <!-- Modal -->
+      </form>
+
+      <!-- Modal -->
+      <form action="{% url 'category_delete' %}" method="post">
+      {% csrf_token %}
+        <input type="hidden" name="category_id" value="{{ category_id }}">
         <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -56,8 +61,9 @@
             </div>
           </div>
         </div>
-        <!-- Modal -->
       </form>
+      <!-- Modal -->
+
     </div>
   </div><!-- page-content" -->
 </div><!-- page-wrapper -->
