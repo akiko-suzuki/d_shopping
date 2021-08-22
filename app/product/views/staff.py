@@ -1,11 +1,13 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
+from core.decorators import staff_login_required
 from core.paginator import paginate_query
 from product.forms import ProductInputForm, ProductSearchForm
 from product.models import Product
 
 
+@staff_login_required
 def product_list(request):
     """ 商品一覧（スタッフ）
 
@@ -48,6 +50,7 @@ def product_list(request):
     )
 
 
+@staff_login_required
 def product_add(request):
     """ 商品登録（スタッフ）
 
@@ -110,6 +113,7 @@ def product_add(request):
     )
 
 
+@staff_login_required
 def product_edit(request, product_id):
     """ 商品編集（スタッフ）
 
@@ -180,6 +184,7 @@ def product_edit(request, product_id):
     )
 
 
+@staff_login_required
 def product_delete(request):
     """ 商品削除（スタッフ）
 

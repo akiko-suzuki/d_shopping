@@ -1,12 +1,14 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
+from core.decorators import staff_login_required
 from core.paginator import paginate_query
 from category.forms import CategoryInputForm, CategorySearchForm
-from product.models import Product
 from category.models import Category
+from product.models import Product
 
 
+@staff_login_required
 def category_list(request):
     """ カテゴリー一覧（スタッフ）
 
@@ -37,6 +39,7 @@ def category_list(request):
     )
 
 
+@staff_login_required
 def category_add(request):
     """ カテゴリー追加（スタッフ）
 
@@ -77,6 +80,7 @@ def category_add(request):
     )
 
 
+@staff_login_required
 def category_edit(request, category_id):
     """ カテゴリー編集（スタッフ）
 
@@ -133,6 +137,7 @@ def category_edit(request, category_id):
     )
 
 
+@staff_login_required
 def category_delete(request):
     """ カテゴリー削除（スタッフ）
 

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from account.forms import StaffLoginForm, StaffAddForm, StaffEditForm, StaffSearchForm
 from account.models import Staff
+from core.decorators import staff_login_required
 from core.paginator import paginate_query
 
 
@@ -40,6 +41,7 @@ def staff_logout(request):
     return redirect('staff_login')
 
 
+@staff_login_required
 def staff_list(request):
     """ スタッフ一覧（スタッフ）
 
@@ -73,6 +75,7 @@ def staff_list(request):
     )
 
 
+@staff_login_required
 def staff_add(request):
     """ スタッフ追加（スタッフ）
 
@@ -109,6 +112,7 @@ def staff_add(request):
     )
 
 
+@staff_login_required
 def staff_edit(request, staff_id):
     """ スタッフ編集（スタッフ）
 
@@ -158,6 +162,7 @@ def staff_edit(request, staff_id):
     )
 
 
+@staff_login_required
 def staff_delete(request):
     """ スタッフ削除（スタッフ）
 
