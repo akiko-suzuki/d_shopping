@@ -51,6 +51,8 @@ def staff_list(request):
     search_form = StaffSearchForm(request.GET)
     # Queryset初期値
     qs = Staff.objects.none()
+    # 現在のページを取得。pageパラメータがなければ、1（最初のページを指定）
+    current_page = request.GET.get('page', 1)
 
     # 検索
     if search_form.is_valid():
@@ -69,8 +71,9 @@ def staff_list(request):
         request,
         'account/account_list.html',
         context={
-            'search_form': search_form,
+            'current_page': current_page,
             'page_obj': page_obj,
+            'search_form': search_form,
         }
     )
 
@@ -85,6 +88,8 @@ def staff_add(request):
     # 入力画面の制御に使う
     add_flag = 1
     form = StaffAddForm(request.POST or None)
+    # 一覧のページパラメータを取得
+    current_page = request.GET.get('page', 1)
 
     if request.method == 'POST':
         # 登録ボタン押下時
@@ -107,6 +112,7 @@ def staff_add(request):
         'account/account_input.html',
         context={
             'add_flag': add_flag,
+            'current_page': current_page,
             'form': form,
         }
     )
@@ -123,6 +129,8 @@ def staff_edit(request, staff_id):
     # 入力画面の制御に使う
     add_flag = 0
     staff = get_object_or_404(Staff, id=staff_id)
+    # 一覧のページパラメータを取得
+    current_page = request.GET.get('page', 1)
 
     if request.method == 'POST':
         form = StaffEditForm(request.POST, staff_id=staff_id)
@@ -155,8 +163,9 @@ def staff_edit(request, staff_id):
         request,
         'account/account_input.html',
         context={
-            'form': form,
             'add_flag': add_flag,
+            'current_page': current_page,
+            'form': form,
             'staff_id': staff_id,
         }
     )

@@ -25,7 +25,7 @@
         </div><!-- form-content" -->
         <div class="d-flex justify-content-between">
           <div>
-            <a href="{% url 'category_list' %}" class="btn btn-primary btn my-3">一覧へ戻る</a>
+            <a href="{% url 'category_list' %}?page={{ current_page }}" class="btn btn-primary btn my-3">一覧へ戻る</a>
           </div>
           <div>
             {% if add_flag %}

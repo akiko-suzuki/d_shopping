@@ -51,7 +51,7 @@
             <!-- 検索条件 -->
 
             <div class="text-right">
-                <a href="{% url 'staff_add' %}" class="btn btn-primary btn my-3">スタッフ追加</a>
+                <a href="{% url 'staff_add' %}?page={{ current_page }}" class="btn btn-primary btn my-3">スタッフ追加</a>
             </div>
             <table class="table table-striped table-bordered">
                 <thead class="">
@@ -67,7 +67,7 @@
                         <td class="text-break align-middle">{{ p.code }}</td>
                         <td class="text-break align-middle">{{ p.name }}</td>
                         <td class="text-center">
-                            <a href="{% url 'staff_edit' p.id %}" class="btn btn-outline-success btn-sm">編集</a>
+                            <a href="{% url 'staff_edit' p.id %}?page={{ current_page }}" class="btn btn-outline-success btn-sm">編集</a>
                         </td>
                     </tr>
                 {% endfor %}

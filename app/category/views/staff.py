@@ -18,6 +18,8 @@ def category_list(request):
     search_form = CategorySearchForm(request.GET)
     # Queryset初期値
     qs = Category.objects.none()
+    # 現在のページを取得。pageパラメータがなければ、1（最初のページを指定）
+    current_page = request.GET.get('page', 1)
 
     # 検索
     if search_form.is_valid():
@@ -33,6 +35,7 @@ def category_list(request):
         request,
         'category/category_list.html',
         context={
+            'current_page': current_page,
             'page_obj': page_obj,
             'search_form': search_form,
         }
@@ -49,7 +52,8 @@ def category_add(request):
     # 入力画面の制御に使う
     add_flag = 1
     form = CategoryInputForm(request.POST or None)
-
+    # 一覧のページパラメータを取得
+    current_page = request.GET.get('page', 1)
     # 登録ボタン押下時
     if request.method == 'POST':
         if form.is_valid():
@@ -75,6 +79,7 @@ def category_add(request):
         'category/category_input.html',
         context={
             'add_flag': add_flag,
+            'current_page': current_page,
             'form': form,
         }
     )
@@ -92,6 +97,8 @@ def category_edit(request, category_id):
     # 入力画面の制御に使う
     add_flag = 0
     category = get_object_or_404(Category, id=category_id)
+    # 一覧のページパラメータを取得
+    current_page = request.GET.get('page', 1)
 
     if request.method == 'POST':
         form = CategoryInputForm(request.POST, category_id=category_id)
@@ -131,8 +138,9 @@ def category_edit(request, category_id):
         'category/category_input.html',
         context={
             'add_flag': add_flag,
-            'form': form,
             'category_id': category_id,
+            'current_page': current_page,
+            'form': form,
         }
     )
 

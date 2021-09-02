@@ -17,6 +17,8 @@ def product_list(request):
     search_form = ProductSearchForm(request.GET)
     # Queryset初期値
     qs = Product.objects.none()
+    # 現在のページを取得。pageパラメータがなければ、1（最初のページを指定）
+    current_page = request.GET.get('page', 1)
 
     # 検索
     if search_form.is_valid():
@@ -44,6 +46,7 @@ def product_list(request):
         request,
         'product/product_list.html',
         context={
+            'current_page': current_page,
             'page_obj': page_obj,
             'search_form': search_form,
         }
@@ -62,6 +65,8 @@ def product_add(request):
     # 公開フラグ
     is_published_flag = 0
     form = ProductInputForm()
+    # 一覧のページパラメータを取得
+    current_page = request.GET.get('page', 1)
 
     if request.method == 'POST':
         # 登録ボタン押下時
@@ -106,8 +111,9 @@ def product_add(request):
         request,
         'product/product_input.html',
         context={
-            'form': form,
             'add_flag': add_flag,
+            'current_page': current_page,
+            'form': form,
             'is_published_flag': is_published_flag,
         }
     )
@@ -126,6 +132,8 @@ def product_edit(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     # 公開フラグ
     is_published_flag = product.is_published
+    # 一覧のページパラメータを取得
+    current_page = request.GET.get('page', 1)
 
     if request.method == 'POST':
         image_clear = request.POST.get('image-clear')
@@ -176,10 +184,11 @@ def product_edit(request, product_id):
         request,
         'product/product_input.html',
         context={
-            'form': form,
-            'product_id': product_id,
             'add_flag': add_flag,
+            'current_page': current_page,
+            'form': form,
             'is_published_flag': is_published_flag,
+            'product_id': product_id,
         }
     )
 
