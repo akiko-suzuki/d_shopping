@@ -1,6 +1,30 @@
 body {
   font-size: 0.9rem;
 }
+ul {
+  list-style: none;
+}
+a {
+  text-decoration: none!important;
+  color:#444;
+}
+
+.product {
+  position: relative;
+  height: 100vh;
+}
+
+.product img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  min-width: 100%;
+  min-height: 100%;
+  max-width: inherit;
+}
+
 
 .page-wrapper .sidebar-wrapper,
 .sidebar-wrapper .sidebar-title > a,
