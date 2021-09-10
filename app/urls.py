@@ -10,10 +10,12 @@ from top import views as top_views
 urlpatterns = [
     # Django admin
     path('admin/', admin.site.urls),
-    # top画面（ユーザ）
+    # ユーザ top画面
     path('', top_views.user_top, name='user_top'),
-    # 商品詳細画面（ユーザ）
+    # ユーザ 商品詳細画面 TODO url考える
     path('product_details/', include('product.user_urls')),
+    # ユーザ カート画面
+    path('cart/', include('cart.user_urls')),
 
     # ログイン（スタッフ）
     path('staff/', views.staff_login, name='staff_login'),

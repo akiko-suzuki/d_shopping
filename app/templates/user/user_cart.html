@@ -1,0 +1,22 @@
+{% extends "load_file.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}D_SHOPPING - TOP{% endblock %}
+
+{% block contents %}
+
+{% include 'include/user_header.html' %}
+
+<main role="main">
+  <section class="text-center px-4 py-5">
+    <div class="container">
+      <h1>カートに入れた商品</h1>
+    </div>
+  </section>
+</main>
+
+{% include 'include/user_footer.html' %}
+
+{% endblock %}
+
+
