@@ -8,6 +8,9 @@ a {
   text-decoration: none!important;
   color:#444;
 }
+.w-70 {
+  width: 70px;
+}
 
 .page-wrapper .sidebar-wrapper,
 .sidebar-wrapper .sidebar-title > a,

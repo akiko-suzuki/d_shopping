@@ -5,15 +5,13 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 
 from account import views
-from top import views as top_views
+from product.views import user_product_list
 
 urlpatterns = [
     # Django admin
     path('admin/', admin.site.urls),
     # ユーザ top画面
-    path('', top_views.user_top, name='user_top'),
-    # ユーザ 商品詳細画面 TODO url考える
-    path('product_details/', include('product.user_urls')),
+    path('', include('product.user_urls')),
     # ユーザ カート画面
     path('cart/', include('cart.user_urls')),
 

@@ -1,6 +1,7 @@
 {% extends "load_file.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load humanize %}
 {% block title %}D_SHOPPING - TOP{% endblock %}
 
 {% block contents %}
@@ -10,7 +11,71 @@
 <main role="main">
   <section class="text-center px-4 py-5">
     <div class="container">
+    {% if cart_items %}
       <h1>カートに入れた商品</h1>
+      <div class="row">
+        <table class="table mt-5 ml-3 border-dark">
+          <thead>
+          <tr class="text-center">
+            <th class="border-bottom border-dark" style="width:15%;">商品画像</th>
+            <th class="border-bottom border-dark" style="width:15%;">商品名</th>
+            <th class="border-bottom border-dark" style="width:10%;">商品カテゴリ</th>
+            <th class="border-bottom border-dark" style="width:15%;">値段</th>
+            <th class="border-bottom border-dark" style="width:10%;">個数</th>
+            <th class="border-bottom border-dark" style="width:10%;">小計</th>
+            <th class="border-bottom border-dark" style="width:10%;"></th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for item in cart_items %}
+          <tr class="text-center">
+            <td class="align-middle">
+              {% if item.image %}
+                <img class="card-img-top" src="/media/{{ item.image }}">
+              {% else %}
+                <img class="card-img-top" src="{% static '/images/no-image.jpg' %}">
+              {% endif %}
+            </td>
+            <td class="align-middle">{{ item.name }}</td>
+            <td class="align-middle">{{ item.category.name }}</td>
+            <td class="align-middle">¥{{ item.price|intcomma }}</td>
+            <td class="align-middle">{{ item.qty_form.qty }} 個</td>
+            <td class="align-middle">¥{{ item.subtotal|intcomma }}</td>
+            <td class="align-middle">
+              <button class="border-0 btn btn-danger">
+                削除
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+
+          <tr class="text-center">
+            <td class="border-bottom-0 align-middle"></td>
+            <td class="border-bottom-0 align-middle"></td>
+            <td class="border-bottom-0 align-middle"></td>
+            <td class="border-bottom-0 align-middle"></td>
+            <td class="border-bottom-0 align-middle font-weight-bold">合計</td>
+            <td class="border-bottom-0 align-middle font-weight-bold">¥{{ total_price|intcomma }}</td>
+            <td class="border-bottom-0 align-middle"></td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="container d-flex justify-content-center mt-3">
+          <p class="mx-5">
+            <a class="btn btn-success" href="/" role="button">
+              買い物を続ける
+            </a>
+          </p>
+          <p class="mx-5">
+            <a class="btn btn-primary" href="#" role="button">
+              注文を確定する
+            </a>
+          </p>
+        </div>
+      </div>
+    {% else %}
+      <h1>カートに商品はありません。</h1>
+    {% endif %}
     </div>
   </section>
 </main>

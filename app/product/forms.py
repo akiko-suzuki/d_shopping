@@ -7,7 +7,7 @@ IS_PUBLISHED_STATUS = (('', '-----'), ('0', '非公開'), ('1', '公開'))
 
 
 class ProductInputForm(forms.Form):
-    """ 商品登録・編集 form"""
+    """ 商品登録・編集 フォーム（スタッフ）"""
     name = forms.CharField(
         label='商品名',
         max_length=255,
@@ -56,7 +56,7 @@ class ProductInputForm(forms.Form):
 
 
 class ProductSearchForm(forms.Form):
-    """ 商品一覧検索フォーム """
+    """ 商品一覧検索フォーム （スタッフ）"""
     name = forms.CharField(
         label='商品名',
         max_length=255,
@@ -83,3 +83,20 @@ class ProductSearchForm(forms.Form):
         choices=IS_PUBLISHED_STATUS,
         required=False,
     )
+
+
+class QtyForm(forms.Form):
+    """ ユーザの商品詳細画面で注文できる数量をチェックする"""
+    qty = forms.IntegerField(
+        label='数量',
+        initial=1,
+        min_value=1,
+        max_value=100,
+        required=True,
+    )
+    # TODO 在庫数を見て入力できる数量を制御する
+    # max_value=在庫数
+    # 在庫数より多い数量を入力された場合にエラーメッセージを表示する
+
+
+

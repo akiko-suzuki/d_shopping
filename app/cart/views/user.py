@@ -1,15 +1,92 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+
+from product.models import Product
+from product.forms import QtyForm
 
 
 def user_cart(request):
-    """ ユーザカート
+    """ ユーザカート 一覧
 
     :param request:
     :return:
     """
+    # del request.session['cart']
+    cart = request.session.get('cart')
+    cart_items = []
+    qty_form = QtyForm()
+    total_price = 0
+    if cart:
+        for item in cart:
+            product_id = item['product_id']
+            qty = int(item['qty'])
+
+            product = get_object_or_404(Product, id=product_id)
+            # 数量formの追加 （商品名とかもformに含めた方がいいのかな？-> 様子み）
+            initial_dict = dict(qty=qty)
+            qty_form = QtyForm(initial=initial_dict)
+            product.qty_form = qty_form
+            # 小計
+            subtotal_price = product.price * qty
+            product.subtotal = subtotal_price
+            # 合計に加算
+            total_price += subtotal_price
+            # カートに商品を追加
+            cart_items.append(product)
 
     return render(
         request,
         'user/user_cart.html',
-        context={}
+        context={
+            'cart_items': cart_items,
+            'qty_form': qty_form,
+            'total_price': total_price,
+        }
     )
+
+
+def user_cart_add(request):
+    """ ユーザカート追加
+
+    :param request:
+    :return:
+    """
+    cart = request.session.get('cart', [])
+    exist_ids = []
+    if request.method == 'POST':
+        qty_form = QtyForm(request.POST)
+        if qty_form.is_valid():
+            cleaned_data = qty_form.cleaned_data
+
+            # カートに追加する商品idと数量を取得
+            product_id = request.POST.get('product_id')
+            qty = int(cleaned_data['qty'])
+
+            # セッションのcartに入れる形にセット
+            add_item = {'product_id': product_id, 'qty': qty}
+
+            # セッションのカートに何かしら入っている場合は、同じ商品idがあるかチェック
+            if cart:
+                # 既にセッションに入っている商品idリスト
+                for c in cart:
+                    exist_ids.append(c['product_id'])
+
+                # セッションに商品idが存在するかをみる
+                exist_flag = False
+                for item in cart:
+                    # 追加する商品idがセッション内に存在したら、数量のみ加算する
+                    if product_id in exist_ids:
+                        if item['product_id'] == product_id:
+                            item['qty'] += qty
+                            exist_flag = True
+                # memo => 「if item['product_id'] == product_id:」のelseでappendすると無限ループになる
+                if not exist_flag:
+                    cart.append(add_item)
+
+            # なければカートに追加
+            else:
+                cart.append(add_item)
+
+            # セッションのcartの情報を更新
+            request.session['cart'] = cart
+
+    return redirect('user_cart')

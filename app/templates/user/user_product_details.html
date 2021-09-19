@@ -1,6 +1,7 @@
 {% extends "load_file.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load humanize %}
 {% block title %}D_SHOPPING - TOP{% endblock %}
 
 {% block contents %}
@@ -11,20 +12,28 @@
   <main role="main">
     <section>
       <div class="container">
-        <form action="#">
+        <form action="{% url 'user_cart_add' %}" method="post">
+          {% csrf_token %}
           <div class="row p-5 mx-5">
             <div class="col-md-4">
-              <img  src="{% static 'images/no-image.jpg' %}" class="img-fluid mx-auto">
+              {% if product.image %}
+                <img  src="/media/{{ product.image }}" class="img-fluid mx-auto">
+              {% else %}
+                <img  src="{% static 'images/no-image.jpg' %}" class="img-fluid mx-auto">
+              {% endif %}
             </div>
             <div class="col-md-7">
-              <h2>商品名</h2>
-              <p class="text-muted small">カテゴリー：野菜</p>
-              <p class="h3">1,500円</p>
-              <div class="text-right mb-2 ">
-                数量：<input type="number" name="example" min="1" max="10" style="width:70px;" placeholder="0">
+              <h2>{{ product.name }}</h2>
+              <p class="text-muted small">カテゴリー：{{ product.category.name }}</p>
+              <p class="h3">¥ {{ product.price|intcomma }}</p>
+              <div class="text-right mb-2 mt-5">
+                <!-- 注文数 -->
+                {{ form.qty.label }}：{{ form.qty|add_class:"w-70" }}
+                {{ form.qty.errors }}
               </div>
+              <input type="hidden" name="product_id" value="{{ product.id }}">
               <div class="text-right">
-                <button type="button" name="" class="btn btn-info ml-auto">カートに入れる</button>
+                <button type="submit" name="" class="btn btn-info ml-auto">カートに入れる</button>
               </div>
             </div>
           </div>
@@ -36,6 +45,15 @@
 
 {% include 'include/user_footer.html' %}
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(function(){
+    $("form").attr("novalidate", "novalidate");
+    $("input").removeAttr("required");
+  });
+</script>
 {% endblock %}
 
 
