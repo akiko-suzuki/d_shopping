@@ -12,7 +12,7 @@
   <main role="main">
     <section>
       <div class="container">
-        <form action="{% url 'user_cart_add' %}" method="post">
+        <form action="" method="post">
           {% csrf_token %}
           <div class="row p-5 mx-5">
             <div class="col-md-4">
@@ -31,7 +31,7 @@
                 {{ form.qty.label }}：{{ form.qty|add_class:"w-70" }}
                 {{ form.qty.errors }}
               </div>
-              <input type="hidden" name="product_id" value="{{ product.id }}">
+              {{ form.product_id.as_hidden }}
               <div class="text-right">
                 <button type="submit" name="" class="btn btn-info ml-auto">カートに入れる</button>
               </div>

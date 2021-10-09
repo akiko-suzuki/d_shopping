@@ -89,10 +89,14 @@ class QtyForm(forms.Form):
     """ ユーザの商品詳細画面で注文できる数量をチェックする"""
     qty = forms.IntegerField(
         label='数量',
-        initial=1,
         min_value=1,
         max_value=100,
         required=True,
+        error_messages={'max_value': '100 以下で入力してください'}
+    )
+    product_id = forms.IntegerField(
+        label='商品id',
+        required=True
     )
     # TODO 在庫数を見て入力できる数量を制御する
     # max_value=在庫数

@@ -11,6 +11,24 @@ a {
 .w-70 {
   width: 70px;
 }
+.change-qty-btn {
+  border:0;
+  color: #212529;
+  background-color: #ffc107;
+  display: inline-block;
+  margin-left: .25em;
+  padding: .5em .5em;
+  font-size: 80%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+}
+.change-qty-btn:hover {
+  background-color: #efb60b;
+}
 
 .page-wrapper .sidebar-wrapper,
 .sidebar-wrapper .sidebar-title > a,
