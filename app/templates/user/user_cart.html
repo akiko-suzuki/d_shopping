@@ -26,6 +26,30 @@
         </div>
       </div>
       {% endif %}
+      <!-- Modal -->
+      <div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirm-delete-modal-label">カートから削除しますか？</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="" method="post">
+              {% csrf_token %}
+              <div class="modal-body" id="delete-cart-item-name">
+
+              </div>
+              <input type="hidden" name="product_id" value="">
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                <button type="submit" name="delete-cart-item" class="btn btn-danger">削除する</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
       {% if cart_items %}
       <h1>カートに入れた商品</h1>
@@ -34,8 +58,8 @@
           <thead>
           <tr class="text-center">
             <th class="border-bottom border-dark" style="width:10%;">商品画像</th>
-            <th class="border-bottom border-dark" style="width:25%;">商品名</th>
-            <th class="border-bottom border-dark" style="width:10%;">商品カテゴリ</th>
+            <th class="border-bottom border-dark" style="width:20%;">商品名</th>
+            <th class="border-bottom border-dark" style="width:20%;">商品カテゴリ</th>
             <th class="border-bottom border-dark" style="width:15%;">値段</th>
             <th class="border-bottom border-dark" style="width:15%;">個数</th>
             <th class="border-bottom border-dark" style="width:15%;">小計</th>
@@ -54,7 +78,7 @@
                   <img class="card-img-top" src="{% static '/images/no-image.jpg' %}">
                   {% endif %}
                 </td>
-                <td class="align-middle">{{ item.name }}</td>
+                <td class="align-middle item-name">{{ item.name }}</td>
                 <td class="align-middle">{{ item.category.name }}</td>
                 <td class="align-middle">¥{{ item.price|intcomma }}</td>
                 <td class="align-middle">
@@ -64,10 +88,8 @@
                 {{ item.qty_form.qty.errors }}
                 {{ item.qty_form.product_id.as_hidden }}
                 <td class="align-middle">¥{{ item.subtotal|intcomma }}</td>
-                <td class="align-middle">
-                  <button class="border-0 btn btn-danger">
-                    削除
-                  </button>
+                <td class="align-middle" id="btn-parent-{{ forloop.counter }}">
+                  <a href="#" class="cart-item-delete-btn" data-toggle="modal" data-target="#confirm-delete-modal">削除</a>
                 </td>
               </tr>
             </form>
@@ -109,6 +131,19 @@
 
 {% block extra_js %}
 <script src="{% static 'js/common.js' %}"></script>
+<script>
+$(document).ready(function() {
+  $('.cart-item-delete-btn').click(function(){
+    var tr_field = $(this).closest('tr');
+    var name = tr_field.find('td.item-name').text()
+    var product_id = tr_field.find('input[name="product_id"]').val()
+
+    // モーダルに商品名と、商品idをセット
+    $('#delete-cart-item-name').text('商品名：' + name);
+    $('#confirm-delete-modal input[name="product_id"]').val(product_id)
+  });
+});
+</script>
 {% endblock %}
 
 

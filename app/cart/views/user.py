@@ -17,25 +17,38 @@ def user_cart(request):
     qty_form = QtyForm()
     total_price = 0
 
-    # カート内商品の個数更新
+    # カート内商品の個数更新, 削除
     if request.method == 'POST':
-        qty_form = QtyForm(request.POST)
-        if qty_form.is_valid():
-            cleaned_data = qty_form.cleaned_data
-            # カートに追加する商品idと数量を取得
+        # カート内商品削除
+        if 'delete-cart-item' in request.POST:
             product_id = request.POST.get('product_id')
-            qty = int(cleaned_data['qty'])
-            # カート内の商品の数量を更新する
+            # カート内から同じ要素を検索して削除
             for c in cart:
-                if c['product_id'] == product_id:
-                    c['qty'] = qty
-            messages.success(request, '個数を更新しました')
-            # セッションのcartの情報を更新
-            request.session['cart'] = cart
-            return redirect('user_cart')
+                if product_id == c['product_id']:
+                    cart.remove(c)
 
+            messages.error(request, '商品を削除しました')
+            request.session['cart'] = cart
+
+        # カート内商品の個数更新
         else:
-            messages.error(request, '個数は100以下で入力してください')
+            qty_form = QtyForm(request.POST)
+            if qty_form.is_valid():
+                cleaned_data = qty_form.cleaned_data
+                # カートに追加する商品idと数量を取得
+                product_id = request.POST.get('product_id')
+                qty = int(cleaned_data['qty'])
+                # カート内の商品の数量を更新する
+                for c in cart:
+                    if c['product_id'] == product_id:
+                        c['qty'] = qty
+                messages.success(request, '個数を更新しました')
+                # セッションのcartの情報を更新
+                request.session['cart'] = cart
+                return redirect('user_cart')
+
+            else:
+                messages.error(request, '個数は100以下で入力してください')
 
     if cart:
         for item in cart:
