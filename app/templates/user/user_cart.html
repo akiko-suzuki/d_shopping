@@ -11,7 +11,6 @@
 <main role="main">
   <section class="text-center px-4 py-5">
     <div class="container">
-
       {% if messages %}
       <div class="row">
         <div class="my-div-style w-100">
@@ -52,7 +51,7 @@
       </div>
 
       {% if cart_items %}
-      <h1>カートに入れた商品</h1>
+      <h2>カートに入れた商品</h2>
       <div class="row">
         <table class="table mt-5 ml-3 border-dark">
           <thead>
@@ -111,11 +110,14 @@
               買い物を続ける
             </a>
           </p>
-          <p class="mx-5">
-            <a class="btn btn-primary" href="#" role="button">
-              注文を確定する
-            </a>
-          </p>
+          <form action="{% url 'user_order' %}" method="post">
+            {% csrf_token %}
+            <p class="mx-5">
+              <button type="submit" class="btn btn-primary" name="">
+                注文手続きへ進む
+              </button>
+            </p>
+          </form>
         </div>
       </div>
       {% else %}

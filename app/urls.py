@@ -14,6 +14,8 @@ urlpatterns = [
     path('', include('product.user_urls')),
     # ユーザ カート画面
     path('cart/', include('cart.user_urls')),
+    # ユーザ 注文情報入力画面
+    path('order/', include('order.user_urls')),
 
     # ログイン（スタッフ）
     path('staff/', views.staff_login, name='staff_login'),

@@ -1,0 +1,73 @@
+{% extends "load_file.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% load humanize %}
+{% block title %}D_shopping - 注文者情報確認画面{% endblock %}
+
+{% block contents %}
+
+{% include 'include/user_header.html' %}
+
+<main role="main">
+  <section class="px-4 py-5">
+    <div class="mx-auto w-50">
+      <h2 class="text-center">注文者情報確認</h2>
+      <hr>
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-content py-4 px-5 bg-light">
+
+          <div class="form-group">
+            <label>お名前</label>
+            <p>鈴木花子</p>
+          </div>
+          <div class="form-group">
+            <label>フリガナ</label>
+            <p>スズキ ハナコ</p>
+          </div>
+          <div class="form-group">
+            <label>郵便番号</label>
+            <p>0001111</p>
+          </div>
+          <div class="form-group">
+            <label>住所</label>
+            <p>神奈川県</p>
+            <p>横浜市〇〇区〇〇町</p>
+            <p>マンション〇〇1-1-101</p>
+          </div>
+          <div class="form-group">
+            <label>電話番号</label>
+            <p>000-1111-2222</p>
+          </div>
+          <div class="form-group">
+            <label>メールアドレス</label>
+            <p>aaa@bbb.com</p>
+          </div>
+          <div class="container d-flex justify-content-center mt-3">
+            <p class="mx-5">
+              <a class="btn btn-secondary" href="{% url 'user_cart' %}" role="button">
+                戻る
+              </a>
+            </p>
+            <p class="mx-5">
+              <button type="submit" class="btn btn-primary" name="">
+                注文を確定する
+              </button>
+            </p>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+{% include 'include/user_footer.html' %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/common.js' %}"></script>
+{% endblock %}
+
+
