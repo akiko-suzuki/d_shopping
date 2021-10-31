@@ -20,6 +20,6 @@ class Staff(models.Model):
     def __str__(self):
         """ Django 管理画面の表示用文字列
 
-        :return: "(ID:pk) Staff.name"
+        :return: "(ID:pk) Staff.name - Staff.code"
         """
-        return "(ID:{}) {} {}".format(self.pk, self.name, self.code)
+        return "(ID:{}) {} - {}".format(self.pk, self.name, self.code)

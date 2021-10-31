@@ -15,6 +15,7 @@ $(function(){
     setTimeout("$('.alert').fadeOut()", 4000)
 
     // Enterキーでsubmitの制御
+    // TODO 管理側の画面だけにする
     $(document).on('keypress', function(event) {
         return event.which !== 13;
     });

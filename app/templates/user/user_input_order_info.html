@@ -1,0 +1,147 @@
+{% extends "load_file.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}D_shopping - 注文者情報入力画面{% endblock %}
+
+{% block contents %}
+
+{% include 'include/user_header.html' %}
+
+<main role="main">
+  <section class="px-4 py-5">
+    <div class="mx-auto w-50">
+      <h2 class="text-center">注文者情報入力</h2>
+      <hr>
+      <form action="" method="post" name="">
+        {% csrf_token %}
+        <div class="form-content py-4 px-5 bg-light">
+          <div class="form-group">
+            <label>お名前 <span class="text-danger">※</span></label>
+            {{ form.name|add_class:"form-control"|attr:"placeholder:鈴木 花子" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.name.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>フリガナ <span class="text-danger">※</span></label>
+            {{ form.name_kana|add_class:"form-control"|attr:"placeholder:スズキ ハナコ" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.name_kana.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>メールアドレス <span class="text-danger">※</span></label>
+            {{ form.email_address|add_class:"form-control"|attr:"placeholder:aaa@ddd.com" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.email_address.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>電話番号 <span class="text-danger">※</span></label>
+            {{ form.phone_number|add_class:"form-control"|attr:"placeholder:00011112222" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.phone_number.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>郵便番号 <span class="text-danger">※</span></label>
+            <div class="d-flex ">
+              {{ form.postal_code|add_class:"form-control w-25 mr-2"|attr:"placeholder:0001111" }}
+              <button type="button" class="btn btn-sm btn-outline-info" id="search-postal-code">郵便番号検索</button>
+            </div>
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.postal_code.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>住所 <span class="text-danger">※</span></label>
+            {{ form.prefecture|add_class:"form-control"|attr:"placeholder:都道府県" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.prefecture.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            {{ form.municipality|add_class:"form-control"|attr:"placeholder:市区町村" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.municipality.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            {{ form.address|add_class:"form-control"|attr:"placeholder:番地、建物名、部屋番号を入力してください" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.address.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="container d-flex justify-content-center mt-3">
+            <p class="mx-5">
+              <a class="btn btn-secondary" href="{% url 'user_cart' %}" role="button">
+                戻る
+              </a>
+            </p>
+            <p class="mx-5">
+              <button type="submit" class="btn btn-primary" name="confirm-order-info">
+                注文者情報確認画面へ
+              </button>
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+{% include 'include/user_footer.html' %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/common.js' %}"></script>
+<script>
+  $(function(){
+    // 郵便番号検索
+    $("#search-postal-code").on('click', function () {
+      // ajax通信開始
+      $.ajax({
+        url: "http://zipcloud.ibsnet.co.jp/api/search?zipcode=" + $('#id_postal_code').val(),
+        // 現在のドメインと、データ取得先のドメインが異なるため 'jsonp' を指定
+        dataType: 'jsonp',
+      }).then(
+        // 通信成功時の処理
+        function (data) {
+          if (data.results) {
+            // 住所情報を取得
+            var result = data.results[0];
+            // フォーム入力欄の「都道府県」「市区町村」「住所」に値をセット
+            $('#id_prefecture').val(result.prefcode);
+            $('#id_municipality').val(result.address2 + result.address3);
+          } else {
+            alert('住所が見つかりません');
+          }
+        },
+        // 通信失敗時の処理
+        function () {
+          alert("読み込み失敗");
+      });
+    });
+  });
+
+</script>
+{% endblock %}
+
+

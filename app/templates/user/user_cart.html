@@ -93,15 +93,15 @@
               </tr>
             </form>
             {% endfor %}
-          <tr class="text-center">
-            <td class="border-bottom-0 align-middle"></td>
-            <td class="border-bottom-0 align-middle"></td>
-            <td class="border-bottom-0 align-middle"></td>
-            <td class="border-bottom-0 align-middle"></td>
-            <td class="border-bottom-0 align-middle font-weight-bold">合計</td>
-            <td class="border-bottom-0 align-middle font-weight-bold">¥{{ total_price|intcomma }}</td>
-            <td class="border-bottom-0 align-middle"></td>
-          </tr>
+            <tr class="text-center">
+              <td class="border-bottom-0 align-middle"></td>
+              <td class="border-bottom-0 align-middle"></td>
+              <td class="border-bottom-0 align-middle"></td>
+              <td class="border-bottom-0 align-middle"></td>
+              <td class="border-bottom-0 align-middle font-weight-bold">合計</td>
+              <td class="border-bottom-0 align-middle font-weight-bold">¥{{ total_price|intcomma }}</td>
+              <td class="border-bottom-0 align-middle"></td>
+            </tr>
           </tbody>
         </table>
         <div class="container d-flex justify-content-center mt-3">
@@ -113,7 +113,7 @@
           <form action="{% url 'user_order' %}" method="post">
             {% csrf_token %}
             <p class="mx-5">
-              <button type="submit" class="btn btn-primary" name="">
+              <button type="submit" class="btn btn-primary" name="input-order-info">
                 注文手続きへ進む
               </button>
             </p>

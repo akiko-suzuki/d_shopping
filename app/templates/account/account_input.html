@@ -5,121 +5,122 @@
 
 {% block contents %}
 <div class="page-wrapper chiller-theme toggled">
-    {% include 'include/sidebar.html' %}
-    <div class="page-content">
-        <div class="container-fluid">
-            <h2>スタッフ{% if add_flag %}追加{% else %}編集{% endif %}</h2>
-            <hr>
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="form-content py-4 px-5 bg-light">
-                    <div class="form-group">
-                        <label>スタッフコード</label>
-                        {{ form.code|add_class:"form-control"|attr:"placeholder:スタッフコード（数字のみ8桁）" }}
-                        <div class="form-row form-inline">
-                            <div class="col-9">
-                                {{ form.code.errors }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>スタッフ名</label>
-                        {{ form.name|add_class:"form-control"|attr:"placeholder:スタッフ名" }}
-                        <div class="form-row form-inline">
-                            <div class="col-9">
-                                {{ form.name.errors }}
-                            </div>
-                        </div>
-                    </div>
-                    {% if add_flag %}
-                    <div class="form-group">
-                        <label for="password">パスワード</label>
-                        {{ form.password|add_class:"form-control"|attr:"type:password" }}
-                        <div class="form-row form-inline">
-                            <div class="col-9">
-                                {{ form.password.errors }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password-conf">パスワード（確認）</label>
-                        {{ form.password_conf|add_class:"form-control"|attr:"type:password" }}
-                        <div class="form-row form-inline">
-                            <div class="col-9">
-                                {{ form.password_conf.errors }}
-                            </div>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="form-group form-check pt-2">
-                        <input type="checkbox" class="form-check-input" name="change-password" id="change-password">
-                        <label class="form-check-label" for="change-password">パスワードを変更する</label>
-                    </div>
-                    <div class="form-content py-4 px-5 bg-white password-bg rounded">
-                        <div class="form-group">
-                            <label for="password">パスワード</label>
-                            {{ form.password|add_class:"form-control"|attr:"type:password" | attr:"disabled" }}
-                            <div class="form-row form-inline">
-                                <div class="col-9">
-                                    {{ form.password.errors }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password-conf">パスワード（確認）</label>
-                            {{ form.password_conf|add_class:"form-control"|attr:"type:password" | attr:"disabled" }}
-                            <div class="form-row form-inline">
-                                <div class="col-9">
-                                    {{ form.password_conf.errors }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div><!-- form-content" -->
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <a href="{% url 'staff_list' %}?page={{ current_page }}" class="btn btn-primary btn my-3">一覧へ戻る</a>
-                    </div>
-                    <div>
-                    {% if add_flag %}
-                        <button type="submit" name="btn_add" class="btn btn-success btn my-3">登録</button>
-                    {% else %}
-                        <button type="button" class="btn btn-danger btn my-3" data-toggle="modal" data-target="#confirm-delete">削除</button>
-                        <button type="submit" name="btn_edit" class="btn btn-success btn my-3">更新</button>
-                    {% endif %}
-                    </div>
+  {% include 'include/sidebar.html' %}
+  <div class="page-content">
+    <div class="container-fluid">
+      <h2>スタッフ{% if add_flag %}追加{% else %}編集{% endif %}</h2>
+      <hr>
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-content py-4 px-5 bg-light">
+          <div class="form-group">
+            <label>スタッフコード</label>
+            {{ form.code|add_class:"form-control"|attr:"placeholder:スタッフコード（数字のみ8桁）" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.code.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>スタッフ名</label>
+            {{ form.name|add_class:"form-control"|attr:"placeholder:スタッフ名" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.name.errors }}
+              </div>
+            </div>
+          </div>
+          {% if add_flag %}
+          <div class="form-group">
+            <label for="password">パスワード</label>
+            {{ form.password|add_class:"form-control"|attr:"type:password" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.password.errors }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password-conf">パスワード（確認）</label>
+            {{ form.password_conf|add_class:"form-control"|attr:"type:password" }}
+            <div class="form-row form-inline">
+              <div class="col-9">
+                {{ form.password_conf.errors }}
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="form-group form-check pt-2">
+            <input type="checkbox" class="form-check-input" name="change-password" id="change-password">
+            <label class="form-check-label" for="change-password">パスワードを変更する</label>
+          </div>
+          <div class="form-content py-4 px-5 bg-white password-bg rounded">
+            <div class="form-group">
+              <label for="password">パスワード</label>
+              {{ form.password|add_class:"form-control"|attr:"type:password" | attr:"disabled" }}
+              <div class="form-row form-inline">
+                <div class="col-9">
+                  {{ form.password.errors }}
                 </div>
-            </form>
-
-            <!-- Modal -->
-            <form action="{% url 'staff_delete' %}" method="post">
-            {% csrf_token %}
-                <input type="hidden" name="staff_id" value="{{ staff_id }}">
-                <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">確認</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                削除しますか？
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">いいえ</button>
-                                <button type="submit" class="btn btn-danger" name="btn_delete" >はい</button>
-                            </div>
-                        </div>
-                    </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password-conf">パスワード（確認）</label>
+              {{ form.password_conf|add_class:"form-control"|attr:"type:password" | attr:"disabled" }}
+              <div class="form-row form-inline">
+                <div class="col-9">
+                  {{ form.password_conf.errors }}
                 </div>
-            </form>
-            <!-- Modal -->
-
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div><!-- form-content" -->
+        <div class="d-flex justify-content-between">
+          <div>
+            <a href="{% url 'staff_list' %}?page={{ current_page }}" class="btn btn-primary btn my-3">一覧へ戻る</a>
+          </div>
+          <div>
+            {% if add_flag %}
+            <button type="submit" name="btn_add" class="btn btn-success btn my-3">登録</button>
+            {% else %}
+            <button type="button" class="btn btn-danger btn my-3" data-toggle="modal" data-target="#confirm-delete">削除
+            </button>
+            <button type="submit" name="btn_edit" class="btn btn-success btn my-3">更新</button>
+            {% endif %}
+          </div>
         </div>
-    </div><!-- page-content" -->
+      </form>
+
+      <!-- Modal -->
+      <form action="{% url 'staff_delete' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="staff_id" value="{{ staff_id }}">
+        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">確認</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                削除しますか？
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">いいえ</button>
+                <button type="submit" class="btn btn-danger" name="btn_delete">はい</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- Modal -->
+
+    </div>
+  </div><!-- page-content" -->
 </div><!-- page-wrapper -->
 {% endblock %}
 
@@ -135,6 +136,7 @@ $('#change-password').click(function(){
       $('[name="password"], [name="password_conf"]').val('');
   }
 });
+
 </script>
 <script src="{% static 'js/common.js' %}"></script>
 
