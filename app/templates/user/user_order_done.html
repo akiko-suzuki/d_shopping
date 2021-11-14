@@ -11,10 +11,14 @@
 <main role="main">
   <section class="px-4 py-5">
     <div class="mx-auto w-50">
-      <h2 class="text-center">注文完了</h2>
+      <h2 class="text-center">ご注文完了</h2>
       <hr>
-      <p>ご注文ありがとうございます。</p>
-      <p>入力のメールアドレスに支払い情報をお送りいたしましたのでご確認ください。</p>
+      <div class="px-2">
+        <p class="text-center mb-4">{{ name }} 様</p>
+        <p class="text-center">ご注文ありがとうございます。</p>
+        <p class="text-center">{{ email_address }}に代金支払い情報をお送りいたしましたのでご確認ください。</p>
+        <p class="text-center">代金のご入金確認後、商品を発送させていただきます。</p>
+      </div>
     </div>
   </section>
 </main>

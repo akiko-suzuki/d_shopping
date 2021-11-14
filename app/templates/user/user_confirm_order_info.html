@@ -19,27 +19,33 @@
 
           <div class="form-group">
             <label class="font-weight-bold">お名前</label>
-            <p>　 {{ form.name.value }}</p>
+            <p class="ml-2">{{ form.name.value }}</p>{{ form.name.as_hidden }}
           </div>
           <div class="form-group">
             <label class="font-weight-bold">フリガナ</label>
-            <p>　 {{ form.name_kana.value }}</p>
+            <p class="ml-2">{{ form.name_kana.value }}</p>{{ form.name_kana.as_hidden }}
           </div>
           <div class="form-group">
             <label class="font-weight-bold">メールアドレス</label>
-            <p>　 {{ form.email_address.value }}</p>
+            <p class="ml-2">{{ form.email_address.value }}</p>{{ form.email_address.as_hidden }}
           </div>
           <div class="form-group">
             <label class="font-weight-bold">電話番号</label>
-            <p>　 {{ form.phone_number.value }}</p>
+            <p class="ml-2">{{ form.phone_number.value }}</p>{{ form.phone_number.as_hidden }}
           </div>
           <div class="form-group">
             <label class="font-weight-bold">郵便番号</label>
-            <p>　 {{ form.postal_code.value }}</p>
+            <p class="ml-2">{{ form.postal_code.value }}</p>{{ form.postal_code.as_hidden }}
           </div>
           <div class="form-group">
             <label class="font-weight-bold">住所</label>
-            <p>　 {{ prefecture.prefecture_name }}{{ form.municipality.value }}{{ form.address.value }}</p>
+            <p class="ml-2">{{ prefecture.prefecture_name }}{{ form.municipality.value }}{{ form.address.value }}</p>
+            <!-- 都道府県id -->
+            {{ form.prefecture.as_hidden }}
+            <!-- 入力された市区町村 -->
+            {{ form.municipality.as_hidden }}
+            <!-- 入力された住所 -->
+            {{ form.address.as_hidden }}
           </div>
           <div class="container d-flex justify-content-center mt-3">
             <p class="mx-5">
