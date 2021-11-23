@@ -28,6 +28,8 @@ urlpatterns = [
     path('staff/category/', include('category.staff_urls')),
     # スタッフ管理画面（スタッフ）
     path('staff/account/', include('account.staff_urls')),
+    # 注文情報画面（スタッフ）
+    path('staff/order/', include('order.staff_urls')),
 ]
 
 if settings.DEBUG:

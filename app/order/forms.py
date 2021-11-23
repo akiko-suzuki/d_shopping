@@ -98,5 +98,17 @@ class OrderInfoForm(forms.Form):
         return replaced_postal_code
 
 
-
+class OrderSearchForm(forms.Form):
+    """ 注文情報検索フォーム（スタッフ画面） """
+    created_at_from = forms.DateTimeField(
+        label='注文日',
+        widget=forms.DateInput(attrs={"type": "date"}),
+        input_formats=['%Y-%m-%d'],
+        required=False,
+    )
+    created_at_to = forms.DateTimeField(
+        widget=forms.DateInput(attrs={"type": "date"}),
+        input_formats=['%Y-%m-%d'],
+        required=False,
+    )
 

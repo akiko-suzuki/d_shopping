@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 
 from prefecture.models import Prefecture
+from product.models import Product
 
 
 class Sales(models.Model):
@@ -31,7 +32,7 @@ class Sales(models.Model):
 class SalesDetails(models.Model):
     """ 注文明細（商品）情報 """
     sales = models.ForeignKey(Sales, verbose_name='注文者情報', on_delete=models.CASCADE)
-    product_id = models.IntegerField(verbose_name='商品ID')
+    product = models.ForeignKey(Product, verbose_name='商品ID', on_delete=models.CASCADE)
     price = models.IntegerField(verbose_name='価格')
     quantity = models.IntegerField(verbose_name='数量')
     created_at = models.DateTimeField(verbose_name="登録日時", default=datetime.now())

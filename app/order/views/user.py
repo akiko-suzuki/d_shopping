@@ -128,6 +128,8 @@ def user_order_done(request):
             quantity=qty
         )
 
+    # セッションのカート情報をクリア
+    del request.session['cart']
 
     return render(
         request,
